@@ -1,0 +1,9 @@
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.csprojAssemblyReference.cache
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.csproj.CoreCompileInputs.cache
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\bin\Debug\Ex03.ConsoleUI.exe
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\bin\Debug\Ex03.ConsoleUI.pdb
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\bin\Debug\Ex03.GarageLogic.dll
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\bin\Debug\Ex03.GarageLogic.pdb
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.csproj.CopyComplete
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.exe
+C:\School\csharp3\C18 Ex03 Guy 301002762 Omer 204059331\Ex03.ConsoleUI\obj\Debug\Ex03.ConsoleUI.pdb
