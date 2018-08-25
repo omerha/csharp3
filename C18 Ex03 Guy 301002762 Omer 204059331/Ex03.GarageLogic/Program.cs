@@ -6,7 +6,7 @@ namespace Ex03.GarageLogic
 {
     class Program
     {
-        List<VehicleInTheGarage> vehicles;
+        List<VehicleInTheGarage> m_vehicles;
     }
     
     public enum eGasType
@@ -146,7 +146,7 @@ namespace Ex03.GarageLogic
         protected string m_ModelName;
         protected string m_LicsenseID;
         private float m_PrecentageOfEnergyLeft;
-        public Engine m_Engine;//not sure if it should be private or public, i think public.
+        public Engine m_EngineType;//not sure if it should be private or public, i think public.
         public string ModelName
         {
             get { return m_ModelName; }
@@ -174,7 +174,6 @@ namespace Ex03.GarageLogic
         private const float k_MaximumAmountOfElectric = (float)3.2;
         private eLicenseType m_LicenseType;
         private int m_EngineVolume;
-        private Engine m_EngineType;
         private Wheel[] m_Wheels = new Wheel[k_NumOfWheels];
         public Bike(string i_ModelName, string i_LicsenseID, eEngineType i_EngineType, eLicenseType i_LicenseType, int i_EngineVolume, float i_AmountOfEnergyLeft)
         {
@@ -182,11 +181,11 @@ namespace Ex03.GarageLogic
             base.m_LicsenseID = i_LicsenseID;
             if (i_EngineType==eEngineType.Electric)
             {
-                m_EngineType = new ElectricEngine(k_MaximumAmountOfElectric, i_AmountOfEnergyLeft);
+                base.m_EngineType = new ElectricEngine(k_MaximumAmountOfElectric, i_AmountOfEnergyLeft);
             }
             else
             {
-                m_EngineType = new GasEngine(k_GasType,k_MaximumAmountOfGas,i_AmountOfEnergyLeft);
+                base.m_EngineType = new GasEngine(k_GasType,k_MaximumAmountOfGas,i_AmountOfEnergyLeft);
             }
             m_LicenseType = i_LicenseType;
             m_EngineVolume = i_EngineVolume;
@@ -217,7 +216,6 @@ namespace Ex03.GarageLogic
         private const float k_MaximumAmountOfElectric = (float)4.8;
         private eCarColor m_CarColor;
         private eNumOfDoors m_NumOfDoors;
-        private Engine m_EngineType;
         private Wheel[] m_Wheels = new Wheel[k_NumOfWheels];
 
         public eCarColor CarColor
@@ -236,11 +234,11 @@ namespace Ex03.GarageLogic
             base.m_LicsenseID = i_LicsenseID;
             if (i_EngineType == eEngineType.Electric)
             {
-                m_EngineType = new ElectricEngine(k_MaximumAmountOfElectric, i_AmountOfEnergyLeft);
+                base.m_EngineType = new ElectricEngine(k_MaximumAmountOfElectric, i_AmountOfEnergyLeft);
             }
             else
             {
-                m_EngineType = new GasEngine(k_GasType,k_MaximumAmountOfGas, i_AmountOfEnergyLeft);
+                base.m_EngineType = new GasEngine(k_GasType,k_MaximumAmountOfGas, i_AmountOfEnergyLeft);
             }
             m_CarColor = i_CarColor;
             m_NumOfDoors = i_NumOfDoors;
@@ -260,7 +258,6 @@ namespace Ex03.GarageLogic
         private const float k_MaximumAmountOfGas = 105;
         private bool m_IsTrunkCool;
         private float m_TrunkVolume;
-        private Engine m_EngineType;
         private Wheel[] m_Wheels = new Wheel[k_NumOfWheels];
 
         public Truck(string i_ModelName, string i_LicsenseID, bool i_IsTrunkCool, float i_TrunkVolume, float i_AmountOfEnergyLeft)
@@ -269,7 +266,7 @@ namespace Ex03.GarageLogic
             base.m_LicsenseID = i_LicsenseID;
             m_IsTrunkCool = i_IsTrunkCool;
             m_TrunkVolume = i_TrunkVolume;
-            m_EngineType = new GasEngine(k_GasType, k_MaximumAmountOfGas,i_AmountOfEnergyLeft);
+            base.m_EngineType = new GasEngine(k_GasType, k_MaximumAmountOfGas,i_AmountOfEnergyLeft);
             for (int i = 0; i < k_NumOfWheels; i++)
             {
                 m_Wheels[i] = new Wheel("ThisIsTheNameOfManufacturer", k_MaxAirPressure);
