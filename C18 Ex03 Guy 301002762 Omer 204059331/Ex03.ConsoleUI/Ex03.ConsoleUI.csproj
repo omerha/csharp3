@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="PrintConsoleUtils.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
