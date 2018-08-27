@@ -110,7 +110,19 @@ namespace Ex03.ConsoleUI
 
         }
 
+        public void DisplayVehiclesInGarage()
+        {
+            eStatusVehicle userChoice = 0;
+            m_ConsoleUtils.VehiclesStatusFilterMenuAndGetInput(ref userChoice);
+            switch (userChoice)
+            {
+                case eStatusVehicle.Fixed:
+                    
+                    break;
 
+            }
+
+        }
         public bool IsTheVehiclesExsitsInTheGarage(string i_LisceneID)
         {
             bool isExists = false;
@@ -121,3 +133,4 @@ namespace Ex03.ConsoleUI
 
     }
 }
+

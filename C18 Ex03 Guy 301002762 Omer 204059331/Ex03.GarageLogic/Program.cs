@@ -62,13 +62,13 @@ namespace Ex03.GarageLogic
                 bool isCarExists = false;
                 if (m_Vehicles != null)
                 {
-                    foreach (VehicleInTheGarage vec in m_Vehicles)
+                    foreach (VehicleInTheGarage vehicle in m_Vehicles)
                     {
-                        if (vec.Vehicle.LicenseID == i_LicenseID)
+                        if (vehicle.Vehicle.LicenseID == i_LicenseID)
                         {
-                            if (vec.StatusOfVehicle != eStatusVehicle.Repair)
+                            if (vehicle.StatusOfVehicle != eStatusVehicle.Repair)
                             {
-                                vec.StatusOfVehicle++;
+                                vehicle.StatusOfVehicle = eStatusVehicle.Repair;
                             }
                             isCarExists = true;
                             break;
@@ -258,6 +258,11 @@ namespace Ex03.GarageLogic
                 {
                     throw new ValueOutOfRangeException(0, i_MaxValue, i_ValueName);
                 }
+            }
+            public virtual StringBuilder GetVehicleDetails()
+            {
+                StringBuilder carDetails = new StringBuilder();
+                return carDetails;
             }
         }
 

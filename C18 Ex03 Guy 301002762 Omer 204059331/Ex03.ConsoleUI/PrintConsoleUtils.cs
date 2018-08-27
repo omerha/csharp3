@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Ex03.GarageLogic;
+using static Ex03.GarageLogic.Program;
+
 
 namespace Ex03.ConsoleUI
 {
@@ -354,6 +355,42 @@ namespace Ex03.ConsoleUI
 
             }
 
+        }
+
+        public void VehiclesStatusFilterMenuAndGetInput(ref eStatusVehicle o_UserChoice)
+        {
+            StringBuilder menuChoices = new StringBuilder();
+            int lineNum = 1;
+            int attemptsSelection = 0;
+            bool inputIsOk = false;
+            string userInput;
+            string msgLine;
+            foreach (string value in Enum.GetNames(typeof(GarageLogic.Program.eStatusVehicle)))
+            {
+                msgLine = string.Format("{0}. Display just the vehicles in {1} status.", lineNum, value);
+                menuChoices.AppendLine(msgLine);
+                lineNum++;
+            }
+            msgLine = string.Format("{0}. Display all the vehicles.", lineNum);
+            menuChoices.AppendLine(msgLine);
+            while (!inputIsOk)
+            {
+                if (attemptsSelection == 0)
+                {
+                    Console.WriteLine("Select the status filter from the list below:");
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input, please try again.{0}Select the status filter from the list below: ", Environment.NewLine);
+                }
+                Console.WriteLine(menuChoices);
+                userInput = Console.ReadLine();
+                if (int.TryParse(userInput, out o_UserChoice))
+                {
+                    inputIsOk = true;
+                }
+                attemptsSelection++;
+            }
         }
 
     }
