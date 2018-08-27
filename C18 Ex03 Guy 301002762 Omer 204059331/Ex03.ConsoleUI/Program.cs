@@ -112,15 +112,38 @@ namespace Ex03.ConsoleUI
 
         public void DisplayVehiclesInGarage()
         {
-            eStatusVehicle userChoice = 0;
+            int userChoice = 0;
+            StringBuilder vehiclesToDisplay = new StringBuilder();
             m_ConsoleUtils.VehiclesStatusFilterMenuAndGetInput(ref userChoice);
-            switch (userChoice)
+            switch ((eStatusVehicle)userChoice)
             {
                 case eStatusVehicle.Fixed:
-                    
+                    vehiclesToDisplay= m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Fixed);
                     break;
-
+                case eStatusVehicle.PaidUp:
+                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.PaidUp);
+                    break;
+                case eStatusVehicle.Repair:
+                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Repair);
+                    break;
+                default:
+                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(null);
+                    break;
             }
+            m_ConsoleUtils.PrintLicenseIDOfVehiclesInTheGarage(vehiclesToDisplay);
+        }
+
+        public void DisplayVehicleDetailsPerLicenseID()
+        {
+
+        }
+
+        public void DisplayFullDetailsOfVehicleInTheGarage()
+        {
+            string LicenseID = null;
+            int attempts = 0;
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref LicenseID, attempts);
+
 
         }
         public bool IsTheVehiclesExsitsInTheGarage(string i_LisceneID)

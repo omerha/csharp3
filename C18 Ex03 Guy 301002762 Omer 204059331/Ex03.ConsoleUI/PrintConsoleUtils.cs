@@ -357,7 +357,7 @@ namespace Ex03.ConsoleUI
 
         }
 
-        public void VehiclesStatusFilterMenuAndGetInput(ref eStatusVehicle o_UserChoice)
+        public void VehiclesStatusFilterMenuAndGetInput(ref int o_UserChoice)
         {
             StringBuilder menuChoices = new StringBuilder();
             int lineNum = 1;
@@ -391,6 +391,11 @@ namespace Ex03.ConsoleUI
                 }
                 attemptsSelection++;
             }
+        }
+
+        public void PrintLicenseIDOfVehiclesInTheGarage(StringBuilder i_LicenseIDToPrint)
+        {
+            Console.WriteLine(i_LicenseIDToPrint);
         }
 
     }
