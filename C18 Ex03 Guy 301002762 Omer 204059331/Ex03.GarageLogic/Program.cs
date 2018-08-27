@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Ex03.GarageLogic.Program.GarageManager;
 
 namespace Ex03.GarageLogic
 {
@@ -86,6 +87,21 @@ namespace Ex03.GarageLogic
                 get { return m_CreateVehicleUtils; }
             }
 
+            public void SetBikeUniqDetails(int i_EngineVolume, int i_LicenseType)
+            {
+                ((Bike)m_Vehicles[m_Vehicles.Count - 1].Vehicle).LicenseType = (eLicenseType)i_LicenseType;
+                ((Bike)m_Vehicles[m_Vehicles.Count - 1].Vehicle).EngineVolume = i_EngineVolume;
+            }
+            public void SetCarUniqDetails(int i_CarColor, int i_CarNumOfDoors)
+            {
+                ((Car)m_Vehicles[m_Vehicles.Count - 1].Vehicle).NumOfDoors = (eNumOfDoors)i_CarNumOfDoors;
+                ((Car)m_Vehicles[m_Vehicles.Count - 1].Vehicle).CarColor = (eCarColor)i_CarColor;
+            }
+            public void SetTrunkUniqDetails(bool i_IsTruckTrunkCool, float i_TruckTrunkVolume)
+            {
+                ((Truck)m_Vehicles[m_Vehicles.Count - 1].Vehicle).IsTrunkCool = i_IsTruckTrunkCool;
+                ((Truck)m_Vehicles[m_Vehicles.Count - 1].Vehicle).TrunkVolume = i_TruckTrunkVolume;
+            }
             public StringBuilder LogicDisplayVehiclesInGarage(eStatusVehicle? i_Filter)
             {
                 StringBuilder vehiclesToDisplay = new StringBuilder();
@@ -131,386 +147,415 @@ namespace Ex03.GarageLogic
                     o_vehicleDeatail.AppendLine(printLine);
 
                     vehicleLookFor.Vehicle.GetVehicleDetails(ref o_vehicleDeatail);
-                    
+
                 }
 
                 return isFoundVehicle;
-
             }
-            public enum eGasType
+        }
+        public enum eGasType
+        {
+            Soler = 1,
+            Octan95 = 2,
+            Octan96 = 3,
+            Octan98 = 4
+        }
+
+        public enum eCarColor
+        {
+            Gray = 1,
+            White = 2,
+            Green = 3,
+            Purple = 4
+        }
+
+        public enum eNumOfDoors
+        {
+            TwoDoors = 1,
+            ThreeDoors = 2,
+            FourDoors = 3,
+            FiveDoors = 4
+        }
+
+        public enum eLicenseType
+        {
+            A1 = 1,
+            A2 = 2,
+            AB = 3,
+            B = 4
+        }
+
+        public enum eStatusVehicle
+        {
+            Repair = 1,
+            Fixed = 2,
+            PaidUp = 3
+        }
+
+        public enum eEngineType
+        {
+            Gas = 1,
+            Electric = 2
+        }
+
+        public enum eVehicleType
+        {
+            Bike = 1,
+            Car = 2,
+            Truck = 3
+        }
+
+        public class VehicleInTheGarage
+        {
+            private string m_NameOfOwner;
+            private string m_PhoneOfOwner;
+            private eStatusVehicle m_StatusOfVehicle;
+            private Vehicle m_Vehicle;
+
+            public string NameOfOwner
             {
-                Soler = 1,
-                Octan95 = 2,
-                Octan96 = 3,
-                Octan98 = 4
-            }
-
-            public enum eCarColor
-            {
-                Gray = 1,
-                White = 2,
-                Green = 3,
-                Purple = 4
-            }
-
-            public enum eNumOfDoors
-            {
-                TwoDoors = 1,
-                ThreeDoors = 2,
-                FourDoors = 3,
-                FiveDoors = 4
-            }
-
-            public enum eLicenseType
-            {
-                A1 = 1,
-                A2 = 2,
-                AB = 3,
-                B = 4
-            }
-
-            public enum eStatusVehicle
-            {
-                Repair = 1,
-                Fixed = 2,
-                PaidUp = 3
-            }
-
-            public enum eEngineType
-            {
-                Gas = 1,
-                Electric = 2
-            }
-
-            public enum eVehicleType
-            {
-                Bike = 1,
-                Car = 2,
-                Truck = 3
-            }
-
-            public class VehicleInTheGarage
-            {
-                private string m_NameOfOwner;
-                private string m_PhoneOfOwner;
-                private eStatusVehicle m_StatusOfVehicle;
-                private Vehicle m_Vehicle;
-
-                public string NameOfOwner
-                {
-                    get { return m_NameOfOwner; }
-                }
-
-                public string PhoneOfOwner
-                {
-                    get { return m_PhoneOfOwner; }
-                }
-                public Vehicle Vehicle
-                {
-                    get { return m_Vehicle; }
-                    set { m_Vehicle = value; }
-                }
-                public eStatusVehicle StatusOfVehicle
-                {
-                    get { return m_StatusOfVehicle; }
-                    set { m_StatusOfVehicle = value; }
-                }
-                public VehicleInTheGarage(Vehicle i_VehicleToAdd, string i_NameOfOwner, string i_PhoneOfOwner)
-                {
-                    m_Vehicle = i_VehicleToAdd;
-                    m_StatusOfVehicle = eStatusVehicle.Repair;
-                    m_NameOfOwner = i_NameOfOwner;
-                    m_PhoneOfOwner = i_PhoneOfOwner;
-                }
+                get { return m_NameOfOwner; }
             }
 
-            public abstract class Engine
+            public string PhoneOfOwner
             {
-                private float m_AmountOfEnergyLeft;
-                protected float m_MaximumAmountOfEnergy;
-                public void Recharge(float i_AmountOfEnergyToCharge)
-                {
-                    if ((i_AmountOfEnergyToCharge + m_AmountOfEnergyLeft) <= m_MaximumAmountOfEnergy)
-                    {
-                        m_AmountOfEnergyLeft += i_AmountOfEnergyToCharge;
-                    }
-                }
+                get { return m_PhoneOfOwner; }
+            }
+            public Vehicle Vehicle
+            {
+                get { return m_Vehicle; }
+                set { m_Vehicle = value; }
+            }
+            public eStatusVehicle StatusOfVehicle
+            {
+                get { return m_StatusOfVehicle; }
+                set { m_StatusOfVehicle = value; }
+            }
+            public VehicleInTheGarage(Vehicle i_VehicleToAdd, string i_NameOfOwner, string i_PhoneOfOwner)
+            {
+                m_Vehicle = i_VehicleToAdd;
+                m_StatusOfVehicle = eStatusVehicle.Repair;
+                m_NameOfOwner = i_NameOfOwner;
+                m_PhoneOfOwner = i_PhoneOfOwner;
+            }
+        }
 
-                public float MaximumAmountOfEnergy
+        public abstract class Engine
+        {
+            private float m_AmountOfEnergyLeft;
+            protected float m_MaximumAmountOfEnergy;
+            private float m_PrecentageOfEnergyLeft;
+            public void Recharge(float i_AmountOfEnergyToCharge)
+            {
+                if ((i_AmountOfEnergyToCharge + m_AmountOfEnergyLeft) <= m_MaximumAmountOfEnergy)
                 {
-                    get { return m_MaximumAmountOfEnergy; }
-                }
-
-                public float AmountOfEnergyLeft
-                {
-                    get { return m_AmountOfEnergyLeft; }
-                    set { m_AmountOfEnergyLeft = value; }
-                }
-                public void ValidateEnergyValues(float i_NewValueForEnergyLeft)
-                {
-                    if (i_NewValueForEnergyLeft > m_MaximumAmountOfEnergy || i_NewValueForEnergyLeft < 0)
-                    {
-                        throw new ValueOutOfRangeException(0, m_MaximumAmountOfEnergy, "Energy");
-                    }
+                    m_AmountOfEnergyLeft += i_AmountOfEnergyToCharge;
                 }
             }
-            public class GasEngine : Engine
+            public float PrecentageOfEnergyLeft
             {
-                private eGasType m_GasType;
-
-                public eGasType GasType
-                {
-                    get { return m_GasType; }
-                }
-
-                public GasEngine(eGasType i_GasType, float i_MaximumAmoutOfEnergyToCharge, float i_AmountOfEnergyLeft)
-                {
-                    m_GasType = i_GasType;
-                    m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
-                    ValidateEnergyValues(i_AmountOfEnergyLeft);
-                    AmountOfEnergyLeft = i_AmountOfEnergyLeft;
-                }
-
+                get { return m_PrecentageOfEnergyLeft; }
+                set { m_PrecentageOfEnergyLeft = value; }
             }
-            public class ElectricEngine : Engine
+            public float MaximumAmountOfEnergy
             {
-                
-                public ElectricEngine(float i_MaximumAmoutOfEnergyToCharge, float i_AmountOfEnergyLeft)
-                {
-                    m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
-                    ValidateEnergyValues(i_AmountOfEnergyLeft);
-                    AmountOfEnergyLeft = i_AmountOfEnergyLeft;
-                }
+                get { return m_MaximumAmountOfEnergy; }
             }
 
-            public abstract class Vehicle
+            public float AmountOfEnergyLeft
             {
-                protected string m_ModelName;
-                protected string m_LicenseID;
-                private float m_PrecentageOfEnergyLeft;
-                public Engine m_EngineType;//not sure if it should be private or public, i think public.
-                public string ModelName
+                get { return m_AmountOfEnergyLeft; }
+                set { m_AmountOfEnergyLeft = value; }
+            }
+            public void CalcAmountOfEnergyLeftInPercentage()
+            {
+                m_PrecentageOfEnergyLeft = (m_AmountOfEnergyLeft / m_MaximumAmountOfEnergy) * 100;
+            }
+            public void ValidateEnergyValues(float i_NewValueForEnergyLeft)
+            {
+                if (i_NewValueForEnergyLeft > m_MaximumAmountOfEnergy || i_NewValueForEnergyLeft < 0)
                 {
-                    get { return m_ModelName; }
+                    throw new ValueOutOfRangeException(0, m_MaximumAmountOfEnergy, "Energy");
                 }
+            }
+        }
+        public class GasEngine : Engine
+        {
+            private eGasType m_GasType;
 
-                public string LicenseID
-                {
-                    get { return m_LicenseID; }
-                }
+            public eGasType GasType
+            {
+                get { return m_GasType; }
+            }
 
-                public Engine EngineType
-                {
-                    get { return m_EngineType; }
-                 }
+            public GasEngine(eGasType i_GasType, float i_MaximumAmoutOfEnergyToCharge, float i_AmountOfEnergyLeft)
+            {
+                m_GasType = i_GasType;
+                m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
+                ValidateEnergyValues(i_AmountOfEnergyLeft);
+                AmountOfEnergyLeft = i_AmountOfEnergyLeft;
+                CalcAmountOfEnergyLeftInPercentage();
+            }
 
-                public float PrecentageOfEnergyLeft
+        }
+        public class ElectricEngine : Engine
+        {
+
+            public ElectricEngine(float i_MaximumAmoutOfEnergyToCharge, float i_AmountOfEnergyLeft)
+            {
+                m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
+                ValidateEnergyValues(i_AmountOfEnergyLeft);
+                AmountOfEnergyLeft = i_AmountOfEnergyLeft;
+                CalcAmountOfEnergyLeftInPercentage();
+            }
+        }
+
+        public abstract class Vehicle
+        {
+            protected string m_ModelName;
+            protected string m_LicenseID;
+            private float m_PrecentageOfEnergyLeft;
+            protected Wheel[] m_Wheels;
+            public Engine m_EngineType;//not sure if it should be private or public, i think public.
+            public string ModelName
+            {
+                get { return m_ModelName; }
+            }
+
+            public string LicenseID
+            {
+                get { return m_LicenseID; }
+            }
+
+            public Engine EngineType
+            {
+                get { return m_EngineType; }
+            }
+
+            public float PrecentageOfEnergyLeft
+            {
+                get { return m_PrecentageOfEnergyLeft; }
+                set { m_PrecentageOfEnergyLeft = value; }
+            }
+            public void ValidateValueInRange(float i_MaxValue, float i_Value, string i_ValueName)
+            {
+                if (i_Value > i_MaxValue || i_Value < 0)
                 {
-                    get { return m_PrecentageOfEnergyLeft; }
-                    set { m_PrecentageOfEnergyLeft = value; }
+                    throw new ValueOutOfRangeException(0, i_MaxValue, i_ValueName);
                 }
-                public void ValidateValueInRange(float i_MaxValue, float i_Value, string i_ValueName)
+            }
+            public void BlowAir()
+            {
+                int getLeng = 0;
+                for (int i = 0; i < m_Wheels.GetLength(getLeng); i++)
                 {
-                    if (i_Value > i_MaxValue || i_Value < 0)
-                    {
-                        throw new ValueOutOfRangeException(0, i_MaxValue, i_ValueName);
-                    }
+                    m_Wheels[i].CurrentAirPressure = m_Wheels[i].MaxAirPressure;
                 }
-                public abstract void GetVehicleDetails(ref StringBuilder io_VehicleDeatails);
+            }
+            public abstract void GetVehicleDetails(ref StringBuilder io_VehicleDeatails);
+
+        }
+
+        public class Bike : Vehicle
+        {
+
+            private eLicenseType m_LicenseType;
+            private int m_EngineVolume;
             
-            }
-
-            public class Bike : Vehicle
+            public Bike(string i_LicenseID, Engine i_Engine, string i_WheelManufac, float i_CurrAirPressure)
             {
-
-                private eLicenseType m_LicenseType;
-                private int m_EngineVolume;
-                private Wheel[] m_Wheels = new Wheel[k_BikeNumOfWheels];
-                public Bike(string i_LicenseID, Engine i_Engine, string i_WheelManufac, float i_CurrAirPressure)
+                m_LicenseID = i_LicenseID;
+                m_EngineType = i_Engine;
+                m_Wheels = new Wheel[k_BikeNumOfWheels];
+                ValidateValueInRange(k_BikeMaxAirPressure, i_CurrAirPressure, "Wheel air pressure");
+                for (int i = 0; i < k_BikeNumOfWheels; i++)
                 {
-                    m_LicenseID = i_LicenseID;
-                    m_EngineType = i_Engine;
-                    ValidateValueInRange(k_BikeMaxAirPressure, i_CurrAirPressure, "Wheel air pressure");
-                    for (int i = 0; i < k_BikeNumOfWheels; i++)
-                    {
-                        m_Wheels[i] = new Wheel(i_WheelManufac, k_BikeMaxAirPressure, i_CurrAirPressure);
-                    }
-                }
-                public eLicenseType LicenseType
-                {
-                    get { return m_LicenseType; }
-                }
-
-                public int EngineVolume
-                {
-                    get { return m_EngineVolume; }
-                }
-                public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
-                {
-                    string printLine;
-                    printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("License type: {0}", LicenseType);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Engine volume: {0}", EngineVolume);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    for (int i = 0; i < k_BikeNumOfWheels; i++)
-                    {
-                        printLine = string.Format("Wheel number {0}:", i + 1);
-                        io_VehicleDeatails.AppendLine(printLine);
-                        io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
-                    }
+                    m_Wheels[i] = new Wheel(i_WheelManufac, k_BikeMaxAirPressure, i_CurrAirPressure);
                 }
             }
-            public class Car : Vehicle
+            public eLicenseType LicenseType
             {
-
-                private eCarColor m_CarColor;
-                private eNumOfDoors m_NumOfDoors;
-                private Wheel[] m_Wheels = new Wheel[k_CarNumOfWheels];
-
-                public eCarColor CarColor
-                {
-                    get { return m_CarColor; }
-                }
-
-                public eNumOfDoors NumOfDoors
-                {
-                    get { return m_NumOfDoors; }
-                }
-
-                public Car(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
-                {
-                    m_ModelName = i_ModelName;
-                    m_LicenseID = i_LicsenseID;
-                    m_EngineType = i_Engine;
-                    ValidateValueInRange(k_CarMaxAirPressure, i_CurrAirPressure, "Wheel air pressure");
-                    for (int i = 0; i < k_CarNumOfWheels; i++)
-                    {
-                        m_Wheels[i] = new Wheel(i_WheelManufac, k_CarMaxAirPressure, i_CurrAirPressure);
-                    }
-
-                }
-                public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
-                {
-                    string printLine;
-                    printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Car color: {0}", CarColor);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Number of doors: {0}", NumOfDoors);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    for (int i = 0; i < k_CarNumOfWheels; i++)
-                    {
-                        printLine = string.Format("Wheel number {0}:", i + 1);
-                        io_VehicleDeatails.AppendLine(printLine);
-                        io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
-                    }
-                }
+                set { m_LicenseType = value; }
+                get { return m_LicenseType; }
             }
 
-            public class Truck : Vehicle
+            public int EngineVolume
             {
-
-                private bool m_IsTrunkCool;
-                private float m_TrunkVolume;
-                private Wheel[] m_Wheels = new Wheel[k_CarNumOfWheels];
-
-                public bool IsTrunkCool
+                set { m_EngineVolume = value; }
+                get { return m_EngineVolume; }
+            }
+            public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
+            {
+                string printLine;
+                printLine = string.Format("Modole name: {0}", base.m_ModelName);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Engine type: {0}", base.m_EngineType);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("License type: {0}", LicenseType);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Engine volume: {0}", EngineVolume);
+                io_VehicleDeatails.AppendLine(printLine);
+                for (int i = 0; i < k_BikeNumOfWheels; i++)
                 {
-                    get { return m_IsTrunkCool; } 
+                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    io_VehicleDeatails.AppendLine(printLine);
+                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
                 }
+            }
+        }
+        public class Car : Vehicle
+        {
 
-                public float TrunkVolume
+            private eCarColor m_CarColor;
+            private eNumOfDoors m_NumOfDoors;
+            
+
+            public eCarColor CarColor
+            {
+                set { m_CarColor = value; }
+                get { return m_CarColor; }
+            }
+
+            public eNumOfDoors NumOfDoors
+            {
+                set { m_NumOfDoors = value; }
+                get { return m_NumOfDoors; }
+            }
+
+            public Car(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
+            {
+                m_ModelName = i_ModelName;
+                m_LicenseID = i_LicsenseID;
+                m_EngineType = i_Engine;
+                m_Wheels = new Wheel[k_CarNumOfWheels];
+                ValidateValueInRange(k_CarMaxAirPressure, i_CurrAirPressure, "Wheel air pressure");
+                for (int i = 0; i < k_CarNumOfWheels; i++)
                 {
-                    get { return m_TrunkVolume; }
-                }
-                public Truck(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
-                {
-                    m_ModelName = i_ModelName;
-                    m_LicenseID = i_LicsenseID;
-                    m_EngineType = i_Engine;
-                    ValidateValueInRange(k_TruckMaximumAmountOfGas, i_CurrAirPressure, "Wheel air pressure");
-                    for (int i = 0; i < k_TruckNumOfWheels; i++)
-                    {
-                        m_Wheels[i] = new Wheel(i_WheelManufac, k_TruckMaxAirPressure, i_CurrAirPressure);
-                    }
-                }
-                public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
-                {
-                    string printLine;
-                    printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    if (IsTrunkCool)
-                    {
-                        printLine = string.Format("The trunk has cooling capacity");
-                    }
-                    else
-                    {
-                        printLine = string.Format("The trunk hasn't cooling capacity");
-                    }
-                    io_VehicleDeatails.AppendLine(printLine);
-                    printLine = string.Format("Trunk volume: {0}", TrunkVolume);
-                    io_VehicleDeatails.AppendLine(printLine);
-                    for (int i=0;i<k_TruckNumOfWheels;i++)
-                    {
-                        printLine = string.Format("Wheel number {0}:", i+1);
-                        io_VehicleDeatails.AppendLine(printLine);
-                        io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
-                    }
+                    m_Wheels[i] = new Wheel(i_WheelManufac, k_CarMaxAirPressure, i_CurrAirPressure);
                 }
 
             }
-
-            public class Wheel
+            public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
-                private string m_NameOfManufacturer;
-                private float m_CurrentAirPressure;
-                private float m_MaxAirPressure;
+                string printLine;
+                printLine = string.Format("Modole name: {0}", base.m_ModelName);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Engine type: {0}", base.m_EngineType);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Car color: {0}", CarColor);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Number of doors: {0}", NumOfDoors);
+                io_VehicleDeatails.AppendLine(printLine);
+                for (int i = 0; i < k_CarNumOfWheels; i++)
+                {
+                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    io_VehicleDeatails.AppendLine(printLine);
+                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
+                }
+            }
+        }
 
-                public float CurrentAirPressure
-                {
-                    get { return m_CurrentAirPressure; }
-                    set { m_CurrentAirPressure = value; }
-                }
+        public class Truck : Vehicle
+        {
 
-                public string NameOfManufacturer
-                {
-                    get { return m_NameOfManufacturer; }
-                }
+            private bool m_IsTrunkCool;
+            private float m_TrunkVolume;
+            
 
-                public float MaxAirPressure
-                {
-                    get { return m_MaxAirPressure; }
-                }
+            public bool IsTrunkCool
+            {
+                set { m_IsTrunkCool = value; }
+                get { return m_IsTrunkCool; }
+            }
 
-                public bool BlowUpWheel(float i_AirToBlow)
+            public float TrunkVolume
+            {
+                set { m_TrunkVolume = value; }
+                get { return m_TrunkVolume; }
+            }
+            public Truck(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
+            {
+                m_ModelName = i_ModelName;
+                m_LicenseID = i_LicsenseID;
+                m_EngineType = i_Engine;
+                m_Wheels = new Wheel[k_CarNumOfWheels];
+                ValidateValueInRange(k_TruckMaximumAmountOfGas, i_CurrAirPressure, "Wheel air pressure");
+                for (int i = 0; i < k_TruckNumOfWheels; i++)
                 {
-                    bool tirePressureUpdated = false;
-                    if ((i_AirToBlow + m_CurrentAirPressure) <= m_MaxAirPressure)
-                    {
-                        tirePressureUpdated = true;
-                    }
-                    return tirePressureUpdated;
+                    m_Wheels[i] = new Wheel(i_WheelManufac, k_TruckMaxAirPressure, i_CurrAirPressure);
                 }
+            }
+            public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
+            {
+                string printLine;
+                printLine = string.Format("Modole name: {0}", base.m_ModelName);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Engine type: {0}", base.m_EngineType);
+                io_VehicleDeatails.AppendLine(printLine);
+                if (IsTrunkCool)
+                {
+                    printLine = string.Format("The trunk has cooling capacity");
+                }
+                else
+                {
+                    printLine = string.Format("The trunk hasn't cooling capacity");
+                }
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Trunk volume: {0}", TrunkVolume);
+                io_VehicleDeatails.AppendLine(printLine);
+                for (int i = 0; i < k_TruckNumOfWheels; i++)
+                {
+                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    io_VehicleDeatails.AppendLine(printLine);
+                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
+                }
+            }
 
-                public Wheel(string i_NameOfManufacturer, float i_MaxAirPressure, float i_CurrAirPressure)
+        }
+
+        public class Wheel
+        {
+            private string m_NameOfManufacturer;
+            private float m_CurrentAirPressure;
+            private float m_MaxAirPressure;
+
+            public float CurrentAirPressure
+            {
+                get { return m_CurrentAirPressure; }
+                set { m_CurrentAirPressure = value; }
+            }
+
+            public string NameOfManufacturer
+            {
+                get { return m_NameOfManufacturer; }
+            }
+
+            public float MaxAirPressure
+            {
+                get { return m_MaxAirPressure; }
+            }
+
+            public bool BlowUpWheel(float i_AirToBlow)
+            {
+                bool tirePressureUpdated = false;
+                if ((i_AirToBlow + m_CurrentAirPressure) <= m_MaxAirPressure)
                 {
-                    m_NameOfManufacturer = i_NameOfManufacturer;
-                    m_MaxAirPressure = i_MaxAirPressure;
-                    m_CurrentAirPressure = i_CurrAirPressure;
+                    tirePressureUpdated = true;
                 }
-                public string GetWheelDetails()
-                {
-                    return string.Format("NameOfManufacturer {0}, CurrentAirPressure {1}, MaxAirPressure {2}", NameOfManufacturer, CurrentAirPressure, MaxAirPressure);
-                }
+                return tirePressureUpdated;
+            }
+
+            public Wheel(string i_NameOfManufacturer, float i_MaxAirPressure, float i_CurrAirPressure)
+            {
+                m_NameOfManufacturer = i_NameOfManufacturer;
+                m_MaxAirPressure = i_MaxAirPressure;
+                m_CurrentAirPressure = i_CurrAirPressure;
+            }
+            public string GetWheelDetails()
+            {
+                return string.Format("NameOfManufacturer {0}, CurrentAirPressure {1}, MaxAirPressure {2}", NameOfManufacturer, CurrentAirPressure, MaxAirPressure);
             }
         }
     }
 }
+

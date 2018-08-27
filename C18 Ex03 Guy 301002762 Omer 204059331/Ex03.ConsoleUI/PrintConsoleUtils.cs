@@ -162,10 +162,18 @@ namespace Ex03.ConsoleUI
                 i_Attempts++;
             }
         }
-        public void PrintMenuAndGetUserChoice( ref int io_UserChoice, int i_Attempts)
+        public void PrintMenuAndGetUserChoice(ref int io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
             string userInput;
+            StringBuilder menu = new StringBuilder();
+            menu.AppendLine("1. Insert new vehicle to the Garage");
+            menu.AppendLine("2. Display the vehicles in the garage based on license ID");
+            menu.AppendLine("3. Change the status of vehicle in the garage");
+            menu.AppendLine("4. Blow your vehcile's wheels air pressure");
+            menu.AppendLine("5. Fill gas in your vehicle");
+            menu.AppendLine("6. Charge you vehcile's battery");
+            menu.AppendLine("7. Display your vehicle details");
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -176,8 +184,9 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your choice from the list below:", Environment.NewLine);
                 }
+                Console.WriteLine(menu);
                 userInput = Console.ReadLine();
-                if (int.TryParse(userInput,out io_UserChoice))
+                if (int.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }

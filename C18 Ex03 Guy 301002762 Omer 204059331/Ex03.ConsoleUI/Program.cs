@@ -18,9 +18,9 @@ namespace Ex03.ConsoleUI
             AddNewVehicle = 1,
             DisplayVehiclesInGarage = 2,
             ChangeVehicleStatus = 3,
-            FillAirPressureToMax = 4,
+            BlowAirPressureToMax = 4,
             FillGas = 5,
-            FillBattery = 6,
+            ChargeBattery = 6,
             DisplayVehicleDetailsPerLicenseID = 7,
             Quit = 0
         }
@@ -43,6 +43,19 @@ namespace Ex03.ConsoleUI
                 {
                     case (int)eMenuChoices.AddNewVehicle:
                         InsertNewVehicleIntoTheGarage();
+                        break;
+                    case (int)eMenuChoices.DisplayVehiclesInGarage:
+                        break;
+                    case (int)eMenuChoices.ChangeVehicleStatus:
+                        break;
+                    case (int)eMenuChoices.BlowAirPressureToMax:
+                        m_GarageManager.Vehicles[0].Vehicle.BlowAir();
+                        break;
+                    case (int)eMenuChoices.FillGas:
+                        break;
+                    case (int)eMenuChoices.ChargeBattery:
+                        break;
+                    case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
                         break;
                     default:
                         attempt++;
@@ -88,20 +101,23 @@ namespace Ex03.ConsoleUI
             switch (i_VehicleChoice)
             {
                 case eVehicleType.Bike:
-                    int licenseType=0, engineVolume = 0;
+                    int licenseType = 0, engineVolume = 0;
                     m_ConsoleUtils.PrintBikeEngineVolumeQuestion(ref engineVolume, 0);
                     m_ConsoleUtils.PrintLicenseTypeChoicesQuestion(ref licenseType, 0);
+                    m_GarageManager.SetBikeUniqDetails(engineVolume, licenseType);
                     break;
                 case eVehicleType.Car:
                     int carColor = 0, carNumOfDoors = 0;
                     m_ConsoleUtils.PrintCarColorQuestion(ref carColor, 0);
                     m_ConsoleUtils.PrintCarNumOfDoorsQuestion(ref carNumOfDoors, 0);
+                    m_GarageManager.SetCarUniqDetails(carColor, carNumOfDoors);
                     break;
                 case eVehicleType.Truck:
                     bool isTruckTrunkCool = false;
                     float truckTrunkVolume = 0;
                     m_ConsoleUtils.PrintTruckBoxVolume(ref truckTrunkVolume, 0);
                     m_ConsoleUtils.PrintTruckTrunkCoolQuestion(ref isTruckTrunkCool, 0);
+                    m_GarageManager.SetTrunkUniqDetails(isTruckTrunkCool, truckTrunkVolume);
                     break;
                 default:
                     break;
