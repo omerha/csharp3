@@ -45,8 +45,10 @@ namespace Ex03.ConsoleUI
                         InsertNewVehicleIntoTheGarage();
                         break;
                     case (int)eMenuChoices.DisplayVehiclesInGarage:
+                        DisplayVehiclesInGarage();
                         break;
                     case (int)eMenuChoices.ChangeVehicleStatus:
+                        ChangeVehicleStatus();
                         break;
                     case (int)eMenuChoices.BlowAirPressureToMax:
                         m_GarageManager.Vehicles[0].Vehicle.BlowAir();
@@ -56,6 +58,7 @@ namespace Ex03.ConsoleUI
                     case (int)eMenuChoices.ChargeBattery:
                         break;
                     case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
+                        DisplayVehicleDetailsPerLicenseID();
                         break;
                     default:
                         attempt++;
@@ -130,6 +133,7 @@ namespace Ex03.ConsoleUI
         {
             int userChoice = 0;
             StringBuilder vehiclesToDisplay = new StringBuilder();
+       
             m_ConsoleUtils.VehiclesStatusFilterMenuAndGetInput(ref userChoice);
             switch ((eStatusVehicle)userChoice)
             {
@@ -151,24 +155,28 @@ namespace Ex03.ConsoleUI
 
         public void DisplayVehicleDetailsPerLicenseID()
         {
-
-        }
-
-        public void DisplayFullDetailsOfVehicleInTheGarage()
-        {
-            string LicenseID = null;
+            string licenseID = null;
             int attempts = 0;
-            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref LicenseID, attempts);
-
-
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
+            StringBuilder vehicleDeatails = new StringBuilder();
+            bool isFoundCar = m_GarageManager.LogicDisplayVehicleDetailsPerLicenseID(licenseID, ref vehicleDeatails);
+            m_ConsoleUtils.PrintVehicleDetails(vehicleDeatails, isFoundCar, licenseID);
         }
-        public bool IsTheVehiclesExsitsInTheGarage(string i_LisceneID)
+
+
+        public void ChangeVehicleStatus()
         {
-            bool isExists = false;
+            int newStatusForChange = 0;
+            string licenseID = null;
+            int attempts = 0;
 
-
-            return isExists;
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
+            m_ConsoleUtils.PrintStatusOptionsMenuAndGetInput(ref newStatusForChange);
+            bool isUpdateStatus = m_GarageManager.LogicChangeVehicleStatus(licenseID, newStatusForChange);
+            m_ConsoleUtils.PrintStatusUpdateMsg(isUpdateStatus, newStatusForChange, licenseID);
         }
+
+
 
     }
 }

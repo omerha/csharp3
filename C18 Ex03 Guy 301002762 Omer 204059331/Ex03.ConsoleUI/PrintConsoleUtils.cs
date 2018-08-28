@@ -8,9 +8,9 @@ namespace Ex03.ConsoleUI
 {
     public class PrintConsoleUtils
     {
-        public void PrintInsertLicseneIDQuestion (ref string io_LicsenseID, int i_Attempts)
+        public void PrintInsertLicseneIDQuestion(ref string io_LicsenseID, int i_Attempts)
         {
-            if (i_Attempts==0)
+            if (i_Attempts == 0)
             {
                 Console.WriteLine("Type the licsense ID:");
             }
@@ -106,7 +106,7 @@ namespace Ex03.ConsoleUI
                 if (int.TryParse(userInput, out userAnswer))
                 {
                     inputIsOk = true;
-                    if(userAnswer == 2)
+                    if (userAnswer == 2)
                     {
                         io_UserChoice = false;
                     }
@@ -173,7 +173,7 @@ namespace Ex03.ConsoleUI
             menu.AppendLine("4. Blow your vehcile's wheels air pressure");
             menu.AppendLine("5. Fill gas in your vehicle");
             menu.AppendLine("6. Charge you vehcile's battery");
-            menu.AppendLine("7. Display your vehicle details");
+            menu.AppendLine("7. Display full details of vehicle according to license number");
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -193,7 +193,7 @@ namespace Ex03.ConsoleUI
                 i_Attempts++;
             }
         }
-        public void PrintCarSelectionAndGetInput(ref int io_UserChoice,ref int io_EngineChoice, int i_Attempts)
+        public void PrintCarSelectionAndGetInput(ref int io_UserChoice, ref int io_EngineChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
             int lineNum = 1;
@@ -218,7 +218,7 @@ namespace Ex03.ConsoleUI
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_UserChoice))
                 {
-                    if(io_UserChoice != (int)GarageLogic.Program.eVehicleType.Truck)
+                    if (io_UserChoice != (int)GarageLogic.Program.eVehicleType.Truck)
                     {
                         PrintEngineSelectionAndGetInput(ref io_EngineChoice, 0);
                     }
@@ -257,7 +257,7 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_EngineChoice))
-                {                  
+                {
                     inputIsOk = true;
                 }
                 i_Attempts++;
@@ -404,8 +404,70 @@ namespace Ex03.ConsoleUI
 
         public void PrintLicenseIDOfVehiclesInTheGarage(StringBuilder i_LicenseIDToPrint)
         {
-            Console.WriteLine(i_LicenseIDToPrint);
+            if (i_LicenseIDToPrint.Length > 0)
+            {
+                Console.WriteLine(i_LicenseIDToPrint);
+            }
+            else
+            {
+                Console.WriteLine("Not exist vehicle in the garage! (with your selected filter)");
+            }
         }
 
+        public void PrintVehicleDetails(StringBuilder i_VehicleDetails, bool i_IsFoundCar, string i_LicenseID)
+        {
+            if (i_IsFoundCar)
+            {
+                Console.WriteLine(i_VehicleDetails);
+            }
+            else
+            {
+                Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
+            }
+        }
+
+        public void PrintStatusOptionsMenuAndGetInput(ref int o_NewStatus)
+        {
+            StringBuilder menuChoices = new StringBuilder();
+            int lineNum = 1;
+            int attempts = 0;
+            bool inputIsOk = false;
+            string userInput;
+            foreach (string value in Enum.GetNames(typeof(eStatusVehicle)))
+            {
+                menuChoices.AppendLine(lineNum + ". " + value);
+                lineNum++;
+            }
+            while (!inputIsOk)
+            {
+                if (attempts == 0)
+                {
+                    Console.WriteLine("Select the new mode from the list below:");
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input, please try again.{0}Select the new mode from the list below:", Environment.NewLine);
+                }
+                Console.WriteLine(menuChoices);
+                userInput = Console.ReadLine();
+                if (int.TryParse(userInput, out o_NewStatus) && o_NewStatus<lineNum)
+                {
+                    inputIsOk = true;
+                }
+                attempts++;
+            }
+        }
+
+        public void PrintStatusUpdateMsg(bool i_IsUpdate, int i_StatusVehicle, string i_LicenseID)
+        {
+            if (i_IsUpdate)
+            {
+                Console.WriteLine("The status of vehicle with license number: {0} changed to status: {1} ", i_LicenseID, Enum.GetName(typeof(eStatusVehicle),(eStatusVehicle)i_StatusVehicle));
+            }
+            else
+            {
+                Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
+            }
+        }
     }
 }

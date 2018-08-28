@@ -111,23 +111,24 @@ namespace Ex03.GarageLogic
                 {
                     if (vehicle.StatusOfVehicle == i_Filter || !i_Filter.HasValue)
                     {
-                        printLine = string.Format("{0}. {1}.", lineNum, vehicle);
+                        printLine = string.Format("{0}. {1}.", lineNum, vehicle.Vehicle.LicenseID);
                         vehiclesToDisplay.AppendLine(printLine);
                         lineNum++;
                     }
                 }
+
                 return vehiclesToDisplay;
             }
 
-            public bool LogicDisplayVehicleDetailsPerLicenseID(string i_LiecenseID, StringBuilder o_vehicleDeatail)
+            public bool LogicDisplayVehicleDetailsPerLicenseID(string i_LicenseID, ref StringBuilder o_VehicleDeatails)
             {
-
-                bool isFoundVehicle = false;
                 VehicleInTheGarage vehicleLookFor = null;
-                string printLine;
+                bool isFoundVehicle = IsTheVehiclesExsitsInTheGarage(i_LicenseID, ref vehicleLookFor);
+                 string printLine;
+                /*
                 foreach (VehicleInTheGarage vehicle in m_Vehicles)
                 {
-                    if (vehicle.Vehicle.LicenseID == i_LiecenseID)
+                    if (vehicle.Vehicle.LicenseID == i_LicenseID)
                     {
                         vehicleLookFor = vehicle;
                         isFoundVehicle = true;
@@ -135,24 +136,63 @@ namespace Ex03.GarageLogic
                     }
 
                 }
+                */
                 if (isFoundVehicle)
                 {
                     printLine = string.Format("The details of vehicle Liecense {0}:", vehicleLookFor.Vehicle.LicenseID);
-                    o_vehicleDeatail.AppendLine(printLine);
-                    printLine = string.Format("Owner's name: {0}:", vehicleLookFor.NameOfOwner);
-                    o_vehicleDeatail.AppendLine(printLine);
-                    printLine = string.Format("Owner's phone: {0}:", vehicleLookFor.PhoneOfOwner);
-                    o_vehicleDeatail.AppendLine(printLine);
-                    printLine = string.Format("Status of vehicle: {0}:", vehicleLookFor.StatusOfVehicle);
-                    o_vehicleDeatail.AppendLine(printLine);
-
-                    vehicleLookFor.Vehicle.GetVehicleDetails(ref o_vehicleDeatail);
-
+                    o_VehicleDeatails.AppendLine(printLine);
+                    printLine = string.Format("Owner's name: {0}", vehicleLookFor.NameOfOwner);
+                    o_VehicleDeatails.AppendLine(printLine);
+                    printLine = string.Format("Owner's phone: {0}", vehicleLookFor.PhoneOfOwner);
+                    o_VehicleDeatails.AppendLine(printLine);
+                    printLine = string.Format("Status of vehicle: {0}", vehicleLookFor.StatusOfVehicle);
+                    o_VehicleDeatails.AppendLine(printLine);
+                    Type typeOfEngine = vehicleLookFor.Vehicle.EngineType.GetType();
+                    if (typeOfEngine.Equals(typeof(GasEngine)))
+                    {
+                        printLine = string.Format("Engine type: gas");
+                    }
+                    else
+                    {
+                        printLine = string.Format("Engine type: electric");
+                    }
+                    o_VehicleDeatails.AppendLine(printLine);
+                    vehicleLookFor.Vehicle.m_EngineType.GetEngineDetails(ref o_VehicleDeatails);
+                    printLine = string.Format("Model name: {0}", vehicleLookFor.Vehicle.ModelName);
+                    vehicleLookFor.Vehicle.GetVehicleDetails(ref o_VehicleDeatails);
                 }
-
                 return isFoundVehicle;
             }
+
+            public bool IsTheVehiclesExsitsInTheGarage(string i_LicenseID, ref VehicleInTheGarage o_VehicleForLook) 
+            {
+                bool isFoundVehicle = false;
+                foreach (VehicleInTheGarage vehicle in m_Vehicles)
+                {
+                    if (vehicle.Vehicle.LicenseID == i_LicenseID)
+                    {
+                        o_VehicleForLook = vehicle;
+                        isFoundVehicle = true;
+                        break;
+                    }
+                }
+                return isFoundVehicle;
+            }
+
+            public bool LogicChangeVehicleStatus(string i_LicenseID, int i_NewModeForChange)
+            {
+                VehicleInTheGarage vehicleForChangeStatus = null;
+                bool isExsitstVehicle = IsTheVehiclesExsitsInTheGarage(i_LicenseID, ref vehicleForChangeStatus);
+                if (isExsitstVehicle)
+                {
+                    vehicleForChangeStatus.StatusOfVehicle = (eStatusVehicle)i_NewModeForChange;
+                }
+                return isExsitstVehicle;
+            }
+
         }
+
+
         public enum eGasType
         {
             Soler = 1,
@@ -278,6 +318,7 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, m_MaximumAmountOfEnergy, "Energy");
                 }
             }
+            public abstract void GetEngineDetails(ref StringBuilder io_VehicleDeatails);
         }
         public class GasEngine : Engine
         {
@@ -294,9 +335,18 @@ namespace Ex03.GarageLogic
                 m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
                 ValidateEnergyValues(i_AmountOfEnergyLeft);
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
-                CalcAmountOfEnergyLeftInPercentage();
+                CalcAmountOfEnergyLeftInPercentage();   
             }
-
+            public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
+            {
+                string printLine;
+                printLine = string.Format("The current amount of fuel in liters: {0}", base.AmountOfEnergyLeft);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("The maximum amount of fuel in liters: {0}", base.MaximumAmountOfEnergy);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Gas type: {0}", GasType);
+                io_VehicleDeatails.AppendLine(printLine);
+            }
         }
         public class ElectricEngine : Engine
         {
@@ -307,6 +357,14 @@ namespace Ex03.GarageLogic
                 ValidateEnergyValues(i_AmountOfEnergyLeft);
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
                 CalcAmountOfEnergyLeftInPercentage();
+            }
+            public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
+            {
+                string printLine;
+                printLine = string.Format("Accumulated time remaining in hours: {0}", base.AmountOfEnergyLeft);
+                io_VehicleDeatails.AppendLine(printLine);
+                printLine = string.Format("Maximum amount of energy: {0}", base.MaximumAmountOfEnergy);
+                io_VehicleDeatails.AppendLine(printLine);
             }
         }
 
@@ -344,6 +402,7 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, i_MaxValue, i_ValueName);
                 }
             }
+            /*
             public void BlowAir()
             {
                 int getLeng = 0;
@@ -352,8 +411,9 @@ namespace Ex03.GarageLogic
                     m_Wheels[i].CurrentAirPressure = m_Wheels[i].MaxAirPressure;
                 }
             }
+            */
             public abstract void GetVehicleDetails(ref StringBuilder io_VehicleDeatails);
-
+            public abstract void BlowAirToMaximum(ref string i_LicenseID);
         }
 
         public class Bike : Vehicle
@@ -387,19 +447,21 @@ namespace Ex03.GarageLogic
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
-                printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                io_VehicleDeatails.AppendLine(printLine);
-                printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("License type: {0}", LicenseType);
                 io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Engine volume: {0}", EngineVolume);
                 io_VehicleDeatails.AppendLine(printLine);
                 for (int i = 0; i < k_BikeNumOfWheels; i++)
                 {
-                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    printLine = string.Format("Wheel number {0}: {1}", i + 1, m_Wheels[i].GetWheelDetails());
                     io_VehicleDeatails.AppendLine(printLine);
-                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
+                }
+            }
+            public override void BlowAirToMaximum(ref string i_LicenseID)
+            {
+                for (int i = 0; i < k_BikeNumOfWheels; i++)
+                {
+                    base.m_Wheels[i].CurrentAirPressure = k_BikeMaxAirPressure;
                 }
             }
         }
@@ -438,19 +500,21 @@ namespace Ex03.GarageLogic
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
-                printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                io_VehicleDeatails.AppendLine(printLine);
-                printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Car color: {0}", CarColor);
                 io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Number of doors: {0}", NumOfDoors);
                 io_VehicleDeatails.AppendLine(printLine);
                 for (int i = 0; i < k_CarNumOfWheels; i++)
                 {
-                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    printLine = string.Format("Wheel number {0}: {1}", i + 1, m_Wheels[i].GetWheelDetails());
                     io_VehicleDeatails.AppendLine(printLine);
-                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
+                }
+            }
+            public override void BlowAirToMaximum(ref string i_LicenseID)
+            {
+                for (int i = 0; i < k_CarNumOfWheels; i++)
+                {
+                    base.m_Wheels[i].CurrentAirPressure = k_CarMaxAirPressure;
                 }
             }
         }
@@ -488,10 +552,6 @@ namespace Ex03.GarageLogic
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
-                printLine = string.Format("Modole name: {0}", base.m_ModelName);
-                io_VehicleDeatails.AppendLine(printLine);
-                printLine = string.Format("Engine type: {0}", base.m_EngineType);
-                io_VehicleDeatails.AppendLine(printLine);
                 if (IsTrunkCool)
                 {
                     printLine = string.Format("The trunk has cooling capacity");
@@ -505,12 +565,17 @@ namespace Ex03.GarageLogic
                 io_VehicleDeatails.AppendLine(printLine);
                 for (int i = 0; i < k_TruckNumOfWheels; i++)
                 {
-                    printLine = string.Format("Wheel number {0}:", i + 1);
+                    printLine = string.Format("Wheel number {0}: {1}", i + 1, m_Wheels[i].GetWheelDetails());
                     io_VehicleDeatails.AppendLine(printLine);
-                    io_VehicleDeatails.AppendLine(m_Wheels[i].GetWheelDetails());
                 }
             }
-
+            public override void BlowAirToMaximum(ref string i_LicenseID)
+            {
+                for (int i = 0; i < k_TruckNumOfWheels; i++)
+                {
+                    base.m_Wheels[i].CurrentAirPressure = k_TruckMaxAirPressure;
+                }
+            }
         }
 
         public class Wheel
@@ -553,7 +618,7 @@ namespace Ex03.GarageLogic
             }
             public string GetWheelDetails()
             {
-                return string.Format("NameOfManufacturer {0}, CurrentAirPressure {1}, MaxAirPressure {2}", NameOfManufacturer, CurrentAirPressure, MaxAirPressure);
+                return string.Format("NameOfManufacturer: {0}, CurrentAirPressure: {1}, MaxAirPressure: {2}", NameOfManufacturer, CurrentAirPressure, MaxAirPressure);
             }
         }
     }
