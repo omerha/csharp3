@@ -40,6 +40,10 @@ namespace Ex03.ConsoleUI
             Console.WriteLine("Type the vehicle owner phone number:");
             io_LicsenseID = Console.ReadLine();
         }
+        public void PrintExceptionError(string i_ExceptionMessage)
+        {
+            Console.WriteLine(i_ExceptionMessage);
+        }
         public void PrintEnergyLeftQuestion(ref float io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -101,7 +105,9 @@ namespace Ex03.ConsoleUI
                 else
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your truck trunk volume:", Environment.NewLine);
+
                 }
+                Console.WriteLine(menuOptions);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out userAnswer))
                 {
@@ -221,6 +227,10 @@ namespace Ex03.ConsoleUI
                     if (io_UserChoice != (int)GarageLogic.Program.eVehicleType.Truck)
                     {
                         PrintEngineSelectionAndGetInput(ref io_EngineChoice, 0);
+                    }
+                    else
+                    {
+                        io_EngineChoice = (int)eEngineType.Gas;
                     }
                     inputIsOk = true;
                 }

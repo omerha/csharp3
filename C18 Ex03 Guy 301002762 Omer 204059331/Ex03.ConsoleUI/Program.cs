@@ -84,9 +84,14 @@ namespace Ex03.ConsoleUI
                     GetRequiredDetailsForNewVehicle((eVehicleType)vehicleChoice,(eEngineType) engineChoice, LicenseID);
                 }
             }
-            catch(ArgumentException)
+            catch(ValueOutOfRangeException ex)
             {
 
+                m_ConsoleUtils.PrintExceptionError(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
             
         }

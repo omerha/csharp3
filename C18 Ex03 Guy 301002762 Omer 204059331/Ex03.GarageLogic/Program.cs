@@ -7,6 +7,21 @@ namespace Ex03.GarageLogic
 {
     public class Program
     {
+    
+        public const int k_BikeNumOfWheels = 2;
+        public const int k_BikeMaxAirPressure = 28;
+        public const eGasType k_BikeGasType = eGasType.Octan95;
+        public const float k_BikeMaximumAmountOfGas = 5;
+        public const float k_BikeMaximumAmountOfElectric = (float)3.2;
+        public const int k_CarNumOfWheels = 4;
+        public const int k_CarMaxAirPressure = 30;
+        public const eGasType k_CarGasType = eGasType.Octan96;
+        public const float k_CarMaximumAmountOfGas = 48;
+        public const float k_CarMaximumAmountOfElectric = (float)4.8;
+        public const int k_TruckNumOfWheels = 16;
+        public const int k_TruckMaxAirPressure = 32;
+        public const eGasType k_TruckGasType = eGasType.Soler;
+        public const float k_TruckMaximumAmountOfGas = 105;
         public class ValueOutOfRangeException : Exception
         {
             private float m_MinValue;
@@ -28,20 +43,6 @@ namespace Ex03.GarageLogic
                 " between {1} to {2}", i_ValueName, i_MinValue, i_MaxValue))
             { }
         }
-        public const int k_BikeNumOfWheels = 2;
-        public const int k_BikeMaxAirPressure = 28;
-        public const eGasType k_BikeGasType = eGasType.Octan95;
-        public const float k_BikeMaximumAmountOfGas = 5;
-        public const float k_BikeMaximumAmountOfElectric = (float)3.2;
-        public const int k_CarNumOfWheels = 4;
-        public const int k_CarMaxAirPressure = 30;
-        public const eGasType k_CarGasType = eGasType.Octan96;
-        public const float k_CarMaximumAmountOfGas = 48;
-        public const float k_CarMaximumAmountOfElectric = (float)4.8;
-        public const int k_TruckNumOfWheels = 16;
-        public const int k_TruckMaxAirPressure = 32;
-        public const eGasType k_TruckGasType = eGasType.Soler;
-        public const float k_TruckMaximumAmountOfGas = 105;
         public class GarageManager
         {
             private List<VehicleInTheGarage> m_Vehicles = new List<VehicleInTheGarage>();
@@ -51,14 +52,7 @@ namespace Ex03.GarageLogic
             {
                 eVehicleType vehicleChoice = (eVehicleType)i_UserCarChoice;
                 eEngineType engineChoice = 0;
-                if (vehicleChoice != eVehicleType.Truck)
-                {
-                    engineChoice = (eEngineType)i_UserEngineChoice;
-                }
-                else
-                {
-                    engineChoice = eEngineType.Gas;
-                }
+                engineChoice = (eEngineType)i_UserEngineChoice;
 
                 bool isCarExists = false;
                 if (m_Vehicles != null)
@@ -78,6 +72,7 @@ namespace Ex03.GarageLogic
                 }
                 return isCarExists;
             }
+
             public List<VehicleInTheGarage> Vehicles
             {
                 get { return m_Vehicles; }
@@ -125,7 +120,7 @@ namespace Ex03.GarageLogic
                 VehicleInTheGarage vehicleLookFor = null;
                 bool isFoundVehicle = IsTheVehiclesExsitsInTheGarage(i_LicenseID, ref vehicleLookFor);
                  string printLine;
-                /*
+                
                 foreach (VehicleInTheGarage vehicle in m_Vehicles)
                 {
                     if (vehicle.Vehicle.LicenseID == i_LicenseID)
@@ -136,7 +131,7 @@ namespace Ex03.GarageLogic
                     }
 
                 }
-                */
+                
                 if (isFoundVehicle)
                 {
                     printLine = string.Format("The details of vehicle Liecense {0}:", vehicleLookFor.Vehicle.LicenseID);
@@ -402,7 +397,7 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, i_MaxValue, i_ValueName);
                 }
             }
-            /*
+
             public void BlowAir()
             {
                 int getLeng = 0;
@@ -411,7 +406,7 @@ namespace Ex03.GarageLogic
                     m_Wheels[i].CurrentAirPressure = m_Wheels[i].MaxAirPressure;
                 }
             }
-            */
+
             public abstract void GetVehicleDetails(ref StringBuilder io_VehicleDeatails);
             public abstract void BlowAirToMaximum(ref string i_LicenseID);
         }
@@ -542,7 +537,7 @@ namespace Ex03.GarageLogic
                 m_ModelName = i_ModelName;
                 m_LicenseID = i_LicsenseID;
                 m_EngineType = i_Engine;
-                m_Wheels = new Wheel[k_CarNumOfWheels];
+                m_Wheels = new Wheel[k_TruckNumOfWheels];
                 ValidateValueInRange(k_TruckMaximumAmountOfGas, i_CurrAirPressure, "Wheel air pressure");
                 for (int i = 0; i < k_TruckNumOfWheels; i++)
                 {
