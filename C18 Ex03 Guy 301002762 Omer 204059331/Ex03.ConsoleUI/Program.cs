@@ -37,34 +37,44 @@ namespace Ex03.ConsoleUI
             {
                 m_ConsoleUtils.PrintMenuAndGetUserChoice(ref userChoice, attempt);
                 attempt = 0;
-                switch (userChoice)
+                try
                 {
-                    case (int)eMenuChoices.AddNewVehicle:
-                        InsertNewVehicleIntoTheGarage();
-                        break;
-                    case (int)eMenuChoices.DisplayVehiclesInGarage:
-                        DisplayVehiclesInGarage();
-                        break;
-                    case (int)eMenuChoices.ChangeVehicleStatus:
-                        ChangeVehicleStatus();
-                        break;
-                    case (int)eMenuChoices.BlowAirPressureToMax:
-                        BlowWheelsAirPerLicenseID();
-                        break;
-                    case (int)eMenuChoices.FillGas:
-                        AddFuelPerLicenseID();
-                        break;
-                    case (int)eMenuChoices.ChargeBattery:
-                        ChargeVehicleBattery();
-                        break;
-                    case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
-                        DisplayVehicleDetailsPerLicenseID();
-                        break;
-                    default:
-                        attempt++;
-                        break;
+                    switch (userChoice)
+                    {
+                        case (int)eMenuChoices.AddNewVehicle:
+                            InsertNewVehicleIntoTheGarage();
+                            break;
+                        case (int)eMenuChoices.DisplayVehiclesInGarage:
+                            DisplayVehiclesInGarage();
+                            break;
+                        case (int)eMenuChoices.ChangeVehicleStatus:
+                            ChangeVehicleStatus();
+                            break;
+                        case (int)eMenuChoices.BlowAirPressureToMax:
+                            BlowWheelsAirPerLicenseID();
+                            break;
+                        case (int)eMenuChoices.FillGas:
+                            AddFuelPerLicenseID();
+                            break;
+                        case (int)eMenuChoices.ChargeBattery:
+                            ChargeVehicleBattery();
+                            break;
+                        case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
+                            DisplayVehicleDetailsPerLicenseID();
+                            break;
+                        default:
+                            //attempt++;
+                            //break;
+                            throw new FormatException();
+                    }
                 }
-            }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+
+                }
+
         }
 
         public void InsertNewVehicleIntoTheGarage()
