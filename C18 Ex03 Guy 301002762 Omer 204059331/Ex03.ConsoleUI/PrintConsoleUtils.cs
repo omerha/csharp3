@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using static Ex03.GarageLogic.Program;
 
-
 namespace Ex03.ConsoleUI
 {
     public class PrintConsoleUtils
@@ -18,32 +17,39 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("Wrong input, please try again.{0}Type the licsense ID:", Environment.NewLine);
             }
+
             io_LicsenseID = Console.ReadLine();
         }
+
         public void PrintModelNameQuestion(ref string io_LicsenseID)
         {
             Console.WriteLine("Type the vehicle model name:");
             io_LicsenseID = Console.ReadLine();
         }
+
         public void PrintWheelManufacQuestion(ref string io_LicsenseID)
         {
             Console.WriteLine("Type the wheel Manufacturer name:");
             io_LicsenseID = Console.ReadLine();
         }
+
         public void PrintVehicleOwnerQuestion(ref string io_LicsenseID)
         {
             Console.WriteLine("Type the vehicle owner name:");
             io_LicsenseID = Console.ReadLine();
         }
+
         public void PrintVehicleOwnerPhoneQuestion(ref string io_LicsenseID)
         {
             Console.WriteLine("Type the vehicle owner phone number:");
             io_LicsenseID = Console.ReadLine();
         }
+
         public void PrintExceptionError(string i_ExceptionMessage)
         {
             Console.WriteLine(i_ExceptionMessage);
         }
+
         public void PrintEnergyLeftQuestion(ref float io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -58,14 +64,17 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type how much energy is left in your vehicle (liters or hours):", Environment.NewLine);
                 }
+
                 userInput = Console.ReadLine();
                 if (float.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintTruckBoxVolume(ref float io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -80,14 +89,17 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your truck trunk volume:", Environment.NewLine);
                 }
+
                 userInput = Console.ReadLine();
                 if (float.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintTruckTrunkCoolQuestion(ref bool io_UserChoice, int i_Attempts)
         {
             StringBuilder menuOptions = new StringBuilder();
@@ -105,8 +117,8 @@ namespace Ex03.ConsoleUI
                 else
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your truck trunk volume:", Environment.NewLine);
-
                 }
+
                 Console.WriteLine(menuOptions);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out userAnswer))
@@ -121,9 +133,11 @@ namespace Ex03.ConsoleUI
                         io_UserChoice = true;
                     }
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintCurrentAirPressureEnergy(ref float io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -138,14 +152,17 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type the current wheels air pressure:", Environment.NewLine);
                 }
+
                 userInput = Console.ReadLine();
                 if (float.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintBikeEngineVolumeQuestion(ref int io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -160,14 +177,17 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your bike engine's volume:", Environment.NewLine);
                 }
+
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintMenuAndGetUserChoice(ref int io_UserChoice, int i_Attempts)
         {
             bool inputIsOk = false;
@@ -190,15 +210,18 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your choice from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menu);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
             }
         }
+
         public void PrintCarSelectionAndGetInput(ref int io_UserChoice, ref int io_EngineChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -220,6 +243,7 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your choice from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_UserChoice))
@@ -232,17 +256,20 @@ namespace Ex03.ConsoleUI
                     {
                         io_EngineChoice = (int)eEngineType.Gas;
                     }
+
                     inputIsOk = true;
                 }
-                i_Attempts++;
 
+                i_Attempts++;
             }
 
         }
+
         public void PrintStatusUpdated()
         {
             Console.WriteLine("Vehicle stats updated. ");
         }
+
         public void PrintEngineSelectionAndGetInput(ref int io_EngineChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -254,6 +281,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -264,21 +292,23 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your choice from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_EngineChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
-
             }
-
         }
+
         public void PrintMsgExistInTheGarage()
         {
             Console.WriteLine("The vehicle is exists in the garage. The vehicle is put into repair mode");
         }
+
         public void PrintLicenseTypeChoicesQuestion(ref int io_LicenseTypeChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -290,6 +320,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -300,17 +331,18 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Type your choice from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_LicenseTypeChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
-
             }
-
         }
+
         public void PrintCarColorQuestion(ref int io_ColorChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -322,6 +354,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -338,11 +371,11 @@ namespace Ex03.ConsoleUI
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
-
             }
-
         }
+
         public void PrintCarNumOfDoorsQuestion(ref int io_ColorChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -354,6 +387,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -364,16 +398,16 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Select the number of doors from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_ColorChoice))
                 {
                     inputIsOk = true;
                 }
+
                 i_Attempts++;
-
             }
-
         }
 
         public void VehiclesStatusFilterMenuAndGetInput(ref int o_UserChoice)
@@ -390,6 +424,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(msgLine);
                 lineNum++;
             }
+
             msgLine = string.Format("{0}. Display all the vehicles.", lineNum);
             menuChoices.AppendLine(msgLine);
             while (!inputIsOk)
@@ -402,12 +437,14 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Select the status filter from the list below: ", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out o_UserChoice))
                 {
                     inputIsOk = true;
                 }
+
                 attemptsSelection++;
             }
         }
@@ -435,17 +472,19 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
         }
-        public void PrintAirPressureUpdated( bool i_IsFoundCar, string i_LicenseID)
+
+        public void PrintAirPressureUpdated(bool i_IsFoundCar, string i_LicenseID)
         {
             if (i_IsFoundCar)
             {
-                Console.WriteLine(string.Format("The wheels air pressure for vehicle {0} is now maximum",i_LicenseID));
+                Console.WriteLine(string.Format("The wheels air pressure for vehicle {0} is now maximum", i_LicenseID));
             }
             else
             {
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
         }
+
         public void PrintBatterycharged(bool i_IsFoundCar, string i_LicenseID)
         {
             if (i_IsFoundCar)
@@ -457,9 +496,9 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
         }
+
         public void PrintGasIsFilled(bool i_IsFoundCar, string i_LicenseID)
         {
-
             if (i_IsFoundCar)
             {
                 Console.WriteLine(string.Format("Successfully filled fuel for vehicle license {0}", i_LicenseID));
@@ -469,10 +508,12 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
         }
+
         public void PrintSomethingWentWrong()
         {
             Console.WriteLine("Unfortunatley this cannot be done, please try again with different values.");
         }
+
         public void PrintHowManyMinutesToChargeBatteryQuestion(ref float io_MinutesTOCharge)
         {
             string userInput = null;
@@ -482,7 +523,7 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("Please enter how many minutes you wish to charge your vehicle's battery");
                 userInput = Console.ReadLine();
-                if(float.TryParse(userInput, out io_MinutesTOCharge))
+                if (float.TryParse(userInput, out io_MinutesTOCharge)) 
                 {
                     userInputCorrect = true;
                     break;
@@ -490,11 +531,11 @@ namespace Ex03.ConsoleUI
                 else
                 {
                     Console.WriteLine("Wrong input,Please try again.");
-                }
-                
+                }               
             }
         }
-        public void PrintHowManyLitersToFillAndGasType(ref float io_LitersToAdd,ref int io_GasType)
+
+        public void PrintHowManyLitersToFillAndGasType(ref float io_LitersToAdd, ref int io_GasType)
         {
             string userInput = null;
             bool userInputCorrect = false;
@@ -505,6 +546,7 @@ namespace Ex03.ConsoleUI
                 gasOptions.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!userInputCorrect)
             {
                 Console.WriteLine("Please enter how many liters you wish to fuel your vehicle");
@@ -522,9 +564,9 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input,Please try again.");
                 }
-
             }
         }
+
         public void PrintStatusOptionsMenuAndGetInput(ref int o_NewStatus)
         {
             StringBuilder menuChoices = new StringBuilder();
@@ -537,6 +579,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (attempts == 0)
@@ -547,12 +590,14 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Select the new mode from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
-                if (int.TryParse(userInput, out o_NewStatus) && o_NewStatus<lineNum)
+                if (int.TryParse(userInput, out o_NewStatus) && o_NewStatus < lineNum) 
                 {
                     inputIsOk = true;
                 }
+
                 attempts++;
             }
         }
@@ -561,7 +606,7 @@ namespace Ex03.ConsoleUI
         {
             if (i_IsUpdate)
             {
-                Console.WriteLine("The status of vehicle with license number: {0} changed to status: {1} ", i_LicenseID, Enum.GetName(typeof(eStatusVehicle),(eStatusVehicle)i_StatusVehicle));
+                Console.WriteLine("The status of vehicle with license number: {0} changed to status: {1} ", i_LicenseID, Enum.GetName(typeof(eStatusVehicle), (eStatusVehicle)i_StatusVehicle));
             }
             else
             {

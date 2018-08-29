@@ -6,8 +6,7 @@ using static Ex03.GarageLogic.Program.GarageManager;
 namespace Ex03.GarageLogic
 {
     public class Program
-    {
-    
+    {  
         public const int k_BikeNumOfWheels = 2;
         public const int k_BikeMaxAirPressure = 28;
         public const eGasType k_BikeGasType = eGasType.Octan95;
@@ -22,27 +21,32 @@ namespace Ex03.GarageLogic
         public const int k_TruckMaxAirPressure = 32;
         public const eGasType k_TruckGasType = eGasType.Soler;
         public const float k_TruckMaximumAmountOfGas = 105;
-        public class ValueOutOfRangeException : Exception
+
+        public class ValueOutOfRangeException : Exception 
         {
             private float m_MinValue;
             private float m_MaxValue;
             private string m_ValueName;
+
             public float MinValue
             {
                 get { return m_MinValue; }
             }
+
             public float MaxValue
             {
                 get { return m_MaxValue; }
             }
+
             public string ValueName
             {
                 get { return m_ValueName; }
             }
-            public ValueOutOfRangeException(float i_MinValue, float i_MaxValue, string i_ValueName) : base(string.Format("Invalid value for {0}, the value should be in the range" +
-                " between {1} to {2}", i_ValueName, i_MinValue, i_MaxValue))
+
+            public ValueOutOfRangeException(float i_MinValue, float i_MaxValue, string i_ValueName) : base(string.Format("Invalid value for {0}, the value should be in the range" + " between {1} to {2}", i_ValueName, i_MinValue, i_MaxValue))
             { }
         }
+
         public class GarageManager
         {
             private List<VehicleInTheGarage> m_Vehicles = new List<VehicleInTheGarage>();
@@ -65,11 +69,13 @@ namespace Ex03.GarageLogic
                             {
                                 vehicle.StatusOfVehicle = eStatusVehicle.Repair;
                             }
+
                             isCarExists = true;
                             break;
                         }
                     }
                 }
+
                 return isCarExists;
             }
 
@@ -77,6 +83,7 @@ namespace Ex03.GarageLogic
             {
                 get { return m_Vehicles; }
             }
+
             public CreateNewVehicleUtils CreateNewVehicleUtils
             {
                 get { return m_CreateVehicleUtils; }
@@ -87,16 +94,19 @@ namespace Ex03.GarageLogic
                 ((Bike)m_Vehicles[m_Vehicles.Count - 1].Vehicle).LicenseType = (eLicenseType)i_LicenseType;
                 ((Bike)m_Vehicles[m_Vehicles.Count - 1].Vehicle).EngineVolume = i_EngineVolume;
             }
+
             public void SetCarUniqDetails(int i_CarColor, int i_CarNumOfDoors)
             {
                 ((Car)m_Vehicles[m_Vehicles.Count - 1].Vehicle).NumOfDoors = (eNumOfDoors)i_CarNumOfDoors;
                 ((Car)m_Vehicles[m_Vehicles.Count - 1].Vehicle).CarColor = (eCarColor)i_CarColor;
             }
+
             public void SetTrunkUniqDetails(bool i_IsTruckTrunkCool, float i_TruckTrunkVolume)
             {
                 ((Truck)m_Vehicles[m_Vehicles.Count - 1].Vehicle).IsTrunkCool = i_IsTruckTrunkCool;
                 ((Truck)m_Vehicles[m_Vehicles.Count - 1].Vehicle).TrunkVolume = i_TruckTrunkVolume;
             }
+
             public StringBuilder LogicDisplayVehiclesInGarage(eStatusVehicle? i_Filter)
             {
                 StringBuilder vehiclesToDisplay = new StringBuilder();
@@ -129,7 +139,6 @@ namespace Ex03.GarageLogic
                         isFoundVehicle = true;
                         break;
                     }
-
                 }
                 
                 if (isFoundVehicle)
@@ -151,14 +160,17 @@ namespace Ex03.GarageLogic
                     {
                         printLine = string.Format("Engine type: electric");
                     }
+
                     o_VehicleDeatails.AppendLine(printLine);
                     vehicleLookFor.Vehicle.m_EngineType.GetEngineDetails(ref o_VehicleDeatails);
                     printLine = string.Format("Model name: {0}", vehicleLookFor.Vehicle.ModelName);
                     vehicleLookFor.Vehicle.GetVehicleDetails(ref o_VehicleDeatails);
                 }
+
                 return isFoundVehicle;
             }
-            public bool ChargeOrFuelVehicle(float i_AmountToAdd,string i_LicenseID,int i_GasType)
+
+            public bool ChargeOrFuelVehicle(float i_AmountToAdd, string i_LicenseID, int i_GasType)
             {
                 bool isCarCharged = false;
                 VehicleInTheGarage vehicleToFill = null;
@@ -169,34 +181,38 @@ namespace Ex03.GarageLogic
                     {
                         throw new ArgumentException();
                     }
-                    else if(vehicleToFill.Vehicle.EngineType is ElectricEngine)
+                    else if (vehicleToFill.Vehicle.EngineType is ElectricEngine) 
                     { 
                         vehicleToFill.Vehicle.EngineType.ChargeOrFuelEngine(i_AmountToAdd);
                     }
                     else
                     {
                         eGasType gasTypeToFill = (eGasType)i_GasType;
-                        if(!(gasTypeToFill == ((GasEngine)vehicleToFill.Vehicle.EngineType).GasType))
+                        if (!(gasTypeToFill == ((GasEngine)vehicleToFill.Vehicle.EngineType).GasType)) 
                         {
                             throw new ArgumentException();
                         }
-                        vehicleToFill.Vehicle.EngineType.ChargeOrFuelEngine(i_AmountToAdd);
-                    }
-               
+
+                               vehicleToFill.Vehicle.EngineType.ChargeOrFuelEngine(i_AmountToAdd);
+                    }             
                 }
+
                 return isCarCharged;
             }
+
             public bool BlowVehicleAirPressurePerLicenseID(string i_LicenseID)
             {
                 bool vehicleFound = false;
                 VehicleInTheGarage vehicleToBlowWheels = null;
-                vehicleFound = IsTheVehiclesExsitsInTheGarage(i_LicenseID,ref vehicleToBlowWheels);
-                if(vehicleFound)
+                vehicleFound = IsTheVehiclesExsitsInTheGarage(i_LicenseID, ref vehicleToBlowWheels);
+                if (vehicleFound) 
                 {
                     vehicleToBlowWheels.Vehicle.BlowAirToMax();
                 }
+
                 return vehicleFound;
             }
+
             public bool IsTheVehiclesExsitsInTheGarage(string i_LicenseID, ref VehicleInTheGarage o_VehicleForLook) 
             {
                 bool isFoundVehicle = false;
@@ -209,6 +225,7 @@ namespace Ex03.GarageLogic
                         break;
                     }
                 }
+
                 return isFoundVehicle;
             }
 
@@ -220,11 +237,10 @@ namespace Ex03.GarageLogic
                 {
                     vehicleForChangeStatus.StatusOfVehicle = (eStatusVehicle)i_NewModeForChange;
                 }
+
                 return isExsitstVehicle;
             }
-
         }
-
 
         public enum eGasType
         {
@@ -294,16 +310,19 @@ namespace Ex03.GarageLogic
             {
                 get { return m_PhoneOfOwner; }
             }
+
             public Vehicle Vehicle
             {
                 get { return m_Vehicle; }
                 set { m_Vehicle = value; }
             }
+
             public eStatusVehicle StatusOfVehicle
             {
                 get { return m_StatusOfVehicle; }
                 set { m_StatusOfVehicle = value; }
             }
+
             public VehicleInTheGarage(Vehicle i_VehicleToAdd, string i_NameOfOwner, string i_PhoneOfOwner)
             {
                 m_Vehicle = i_VehicleToAdd;
@@ -318,6 +337,7 @@ namespace Ex03.GarageLogic
             protected float m_AmountOfEnergyLeft;
             protected float m_MaximumAmountOfEnergy;
             private float m_PrecentageOfEnergyLeft;
+
             public void Recharge(float i_AmountOfEnergyToCharge)
             {
                 if ((i_AmountOfEnergyToCharge + m_AmountOfEnergyLeft) <= m_MaximumAmountOfEnergy)
@@ -325,11 +345,13 @@ namespace Ex03.GarageLogic
                     m_AmountOfEnergyLeft += i_AmountOfEnergyToCharge;
                 }
             }
+
             public float PrecentageOfEnergyLeft
             {
                 get { return m_PrecentageOfEnergyLeft; }
                 set { m_PrecentageOfEnergyLeft = value; }
             }
+
             public float MaximumAmountOfEnergy
             {
                 get { return m_MaximumAmountOfEnergy; }
@@ -340,11 +362,14 @@ namespace Ex03.GarageLogic
                 get { return m_AmountOfEnergyLeft; }
                 set { m_AmountOfEnergyLeft = value; }
             }
+
             public void CalcAmountOfEnergyLeftInPercentage()
             {
                 m_PrecentageOfEnergyLeft = (m_AmountOfEnergyLeft / m_MaximumAmountOfEnergy) * 100;
             }
+
             public abstract void ChargeOrFuelEngine(float i_AmountToAdd);
+
             public void ValidateEnergyValues(float i_NewValueForEnergyLeft)
             {
                 if (i_NewValueForEnergyLeft > m_MaximumAmountOfEnergy || i_NewValueForEnergyLeft < 0)
@@ -352,8 +377,10 @@ namespace Ex03.GarageLogic
                     throw new ValueOutOfRangeException(0, m_MaximumAmountOfEnergy, "Energy");
                 }
             }
+
             public abstract void GetEngineDetails(ref StringBuilder io_VehicleDeatails);
         }
+
         public class GasEngine : Engine
         {
             private eGasType m_GasType;
@@ -371,25 +398,27 @@ namespace Ex03.GarageLogic
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
                 CalcAmountOfEnergyLeftInPercentage();   
             }
+
             public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
-                printLine = string.Format("The current amount of fuel in liters: {0}", base.AmountOfEnergyLeft);
+                printLine = string.Format("The current amount of fuel in liters: {0}", AmountOfEnergyLeft);
                 io_VehicleDeatails.AppendLine(printLine);
-                printLine = string.Format("The maximum amount of fuel in liters: {0}", base.MaximumAmountOfEnergy);
+                printLine = string.Format("The maximum amount of fuel in liters: {0}", MaximumAmountOfEnergy);
                 io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Gas type: {0}", GasType);
                 io_VehicleDeatails.AppendLine(printLine);
             }
+
             public override void ChargeOrFuelEngine(float i_LitersToAdd)
             {
                 ValidateEnergyValues(m_AmountOfEnergyLeft + i_LitersToAdd);
                 m_AmountOfEnergyLeft += i_LitersToAdd;
             }
         }
+
         public class ElectricEngine : Engine
         {
-
             public ElectricEngine(float i_MaximumAmoutOfEnergyToCharge, float i_AmountOfEnergyLeft)
             {
                 m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
@@ -397,14 +426,16 @@ namespace Ex03.GarageLogic
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
                 CalcAmountOfEnergyLeftInPercentage();
             }
+
             public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
-                printLine = string.Format("Accumulated time remaining in hours: {0}", base.AmountOfEnergyLeft);
+                printLine = string.Format("Accumulated time remaining in hours: {0}", AmountOfEnergyLeft);
                 io_VehicleDeatails.AppendLine(printLine);
-                printLine = string.Format("Maximum amount of energy: {0}", base.MaximumAmountOfEnergy);
+                printLine = string.Format("Maximum amount of energy: {0}", MaximumAmountOfEnergy);
                 io_VehicleDeatails.AppendLine(printLine);
             }
+
             public override void ChargeOrFuelEngine(float i_MinutesToCharge)
             {
                 float hoursToCharge = i_MinutesToCharge / 60;
@@ -419,7 +450,8 @@ namespace Ex03.GarageLogic
             protected string m_LicenseID;
             private float m_PrecentageOfEnergyLeft;
             protected Wheel[] m_Wheels;
-            public Engine m_EngineType;//not sure if it should be private or public, i think public.
+            public Engine m_EngineType;
+
             public string ModelName
             {
                 get { return m_ModelName; }
@@ -440,6 +472,7 @@ namespace Ex03.GarageLogic
                 get { return m_PrecentageOfEnergyLeft; }
                 set { m_PrecentageOfEnergyLeft = value; }
             }
+
             public void ValidateValueInRange(float i_MaxValue, float i_Value, string i_ValueName)
             {
                 if (i_Value > i_MaxValue || i_Value < 0)
@@ -462,7 +495,6 @@ namespace Ex03.GarageLogic
 
         public class Bike : Vehicle
         {
-
             private eLicenseType m_LicenseType;
             private int m_EngineVolume;
             
@@ -478,17 +510,19 @@ namespace Ex03.GarageLogic
                     m_Wheels[i] = new Wheel(i_WheelManufac, k_BikeMaxAirPressure, i_CurrAirPressure);
                 }
             }
+
             public eLicenseType LicenseType
             {
-                set { m_LicenseType = value; }
                 get { return m_LicenseType; }
+                set { m_LicenseType = value; }
             }
 
             public int EngineVolume
-            {
-                set { m_EngineVolume = value; }
+            {                
                 get { return m_EngineVolume; }
+                set { m_EngineVolume = value; }
             }
+
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
@@ -502,25 +536,23 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
-
         }
+
         public class Car : Vehicle
         {
-
             private eCarColor m_CarColor;
-            private eNumOfDoors m_NumOfDoors;
-            
+            private eNumOfDoors m_NumOfDoors;         
 
             public eCarColor CarColor
             {
-                set { m_CarColor = value; }
                 get { return m_CarColor; }
+                set { m_CarColor = value; }
             }
 
             public eNumOfDoors NumOfDoors
-            {
-                set { m_NumOfDoors = value; }
+            {                
                 get { return m_NumOfDoors; }
+                set { m_NumOfDoors = value; }
             }
 
             public Car(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
@@ -534,8 +566,8 @@ namespace Ex03.GarageLogic
                 {
                     m_Wheels[i] = new Wheel(i_WheelManufac, k_CarMaxAirPressure, i_CurrAirPressure);
                 }
-
             }
+
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
@@ -549,27 +581,25 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
-
         }
 
         public class Truck : Vehicle
         {
-
             private bool m_IsTrunkCool;
             private float m_TrunkVolume;
-            
 
             public bool IsTrunkCool
-            {
-                set { m_IsTrunkCool = value; }
+            {                
                 get { return m_IsTrunkCool; }
+                set { m_IsTrunkCool = value; }
             }
 
             public float TrunkVolume
-            {
-                set { m_TrunkVolume = value; }
+            {                
                 get { return m_TrunkVolume; }
+                set { m_TrunkVolume = value; }
             }
+
             public Truck(string i_ModelName, Engine i_Engine, string i_LicsenseID, string i_WheelManufac, float i_CurrAirPressure)
             {
                 m_ModelName = i_ModelName;
@@ -582,6 +612,7 @@ namespace Ex03.GarageLogic
                     m_Wheels[i] = new Wheel(i_WheelManufac, k_TruckMaxAirPressure, i_CurrAirPressure);
                 }
             }
+
             public override void GetVehicleDetails(ref StringBuilder io_VehicleDeatails)
             {
                 string printLine;
@@ -593,6 +624,7 @@ namespace Ex03.GarageLogic
                 {
                     printLine = string.Format("The trunk hasn't cooling capacity");
                 }
+
                 io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Trunk volume: {0}", TrunkVolume);
                 io_VehicleDeatails.AppendLine(printLine);
@@ -602,7 +634,6 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
- 
         }
 
         public class Wheel
@@ -634,6 +665,7 @@ namespace Ex03.GarageLogic
                 {
                     tirePressureUpdated = true;
                 }
+
                 return tirePressureUpdated;
             }
 
@@ -643,6 +675,7 @@ namespace Ex03.GarageLogic
                 m_MaxAirPressure = i_MaxAirPressure;
                 m_CurrentAirPressure = i_CurrAirPressure;
             }
+
             public string GetWheelDetails()
             {
                 return string.Format("NameOfManufacturer: {0}, CurrentAirPressure: {1}, MaxAirPressure: {2}", NameOfManufacturer, CurrentAirPressure, MaxAirPressure);
@@ -650,4 +683,3 @@ namespace Ex03.GarageLogic
         }
     }
 }
-

@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic;
 using static Ex03.GarageLogic.Program;
-
 namespace Ex03.ConsoleUI
 {
-    class Program
+   public class Program
     {
-        public static void Main()
-        {
-            Program main = new Program();
-            main.Menu();
-        }
         public enum eMenuChoices
         {
             AddNewVehicle = 1,
@@ -24,22 +18,26 @@ namespace Ex03.ConsoleUI
             DisplayVehicleDetailsPerLicenseID = 7,
             Quit = 0
         }
+
+        public static void Main()
+        {
+            Program main = new Program();
+            main.Menu();
+        }
         private PrintConsoleUtils m_ConsoleUtils = new PrintConsoleUtils();
         private GarageManager m_GarageManager = new GarageManager();
 
         public void Menu()
-        {
-            
+        {            
             bool quitMenu = false;
           
             int attempt = 0;
             int userChoice = -1;
-            eMenuChoices eUserChoice;
-            while(!quitMenu)
+            while (!quitMenu)
             {
-                m_ConsoleUtils.PrintMenuAndGetUserChoice(ref  userChoice, attempt);
+                m_ConsoleUtils.PrintMenuAndGetUserChoice(ref userChoice, attempt);
                 attempt = 0;
-                switch(userChoice)
+                switch (userChoice)
                 {
                     case (int)eMenuChoices.AddNewVehicle:
                         InsertNewVehicleIntoTheGarage();
@@ -66,40 +64,39 @@ namespace Ex03.ConsoleUI
                         attempt++;
                         break;
                 }
-                
             }
         }
+
         public void InsertNewVehicleIntoTheGarage()
         {
             try
             {
                 string LicenseID = null;
                 int attempts = 0, vehicleChoice = -1, engineChoice = -1;
-                m_ConsoleUtils.PrintCarSelectionAndGetInput(ref vehicleChoice,ref engineChoice, attempts);
+                m_ConsoleUtils.PrintCarSelectionAndGetInput(ref vehicleChoice, ref engineChoice, attempts);
                 m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref LicenseID, attempts);
-                if(m_GarageManager.CheckIfVehicleExists(vehicleChoice,engineChoice, LicenseID))
+                if (m_GarageManager.CheckIfVehicleExists(vehicleChoice, engineChoice, LicenseID)) 
                 {
                     m_ConsoleUtils.PrintStatusUpdated();
                 }
                 else
                 {
-                    GetRequiredDetailsForNewVehicle((eVehicleType)vehicleChoice,(eEngineType) engineChoice, LicenseID);
+                    GetRequiredDetailsForNewVehicle((eVehicleType)vehicleChoice, (eEngineType)engineChoice, LicenseID);
                 }
             }
-            catch(ValueOutOfRangeException ex)
+            catch (ValueOutOfRangeException ex)
             {
-
                 m_ConsoleUtils.PrintExceptionError(ex.Message);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.ToString());
-            }
-            
+            }         
         }
+
         public void GetRequiredDetailsForNewVehicle(eVehicleType i_VehicleChoice, eEngineType i_EngineChoice, string i_LicenseID)
-        { 
-            string modelName=null, wheelManufac=null, vehicleOwner=null, ownerPhone=null;
+        {
+            string modelName = null, wheelManufac = null, vehicleOwner = null, ownerPhone = null;
             float energyLeft = 0, currentAirPressure = 0;
             m_ConsoleUtils.PrintCurrentAirPressureEnergy(ref currentAirPressure, 0);
             m_ConsoleUtils.PrintEnergyLeftQuestion(ref energyLeft, 0);
@@ -107,7 +104,7 @@ namespace Ex03.ConsoleUI
             m_ConsoleUtils.PrintWheelManufacQuestion(ref wheelManufac);
             m_ConsoleUtils.PrintVehicleOwnerPhoneQuestion(ref ownerPhone);
             m_ConsoleUtils.PrintVehicleOwnerQuestion(ref vehicleOwner);
-            m_GarageManager.CreateNewVehicleUtils.CreateNewVehicle( m_GarageManager.Vehicles, i_VehicleChoice, i_EngineChoice, i_LicenseID, modelName, wheelManufac, vehicleOwner, ownerPhone, energyLeft, currentAirPressure);
+            m_GarageManager.CreateNewVehicleUtils.CreateNewVehicle(m_GarageManager.Vehicles, i_VehicleChoice, i_EngineChoice, i_LicenseID, modelName, wheelManufac, vehicleOwner, ownerPhone, energyLeft, currentAirPressure);
             switch (i_VehicleChoice)
             {
                 case eVehicleType.Bike:
@@ -131,9 +128,7 @@ namespace Ex03.ConsoleUI
                     break;
                 default:
                     break;
-
             }
-
         }
 
         public void DisplayVehiclesInGarage()
@@ -145,7 +140,7 @@ namespace Ex03.ConsoleUI
             switch ((eStatusVehicle)userChoice)
             {
                 case eStatusVehicle.Fixed:
-                    vehiclesToDisplay= m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Fixed);
+                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Fixed);
                     break;
                 case eStatusVehicle.PaidUp:
                     vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.PaidUp);
@@ -157,6 +152,7 @@ namespace Ex03.ConsoleUI
                     vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(null);
                     break;
             }
+
             m_ConsoleUtils.PrintLicenseIDOfVehiclesInTheGarage(vehiclesToDisplay);
         }
 
@@ -179,6 +175,7 @@ namespace Ex03.ConsoleUI
             isVehicleFound = m_GarageManager.BlowVehicleAirPressurePerLicenseID(licenseID);
             m_ConsoleUtils.PrintAirPressureUpdated(isVehicleFound, licenseID);
         }
+
         public void AddFuelPerLicenseID()
         {
             string licenseID = null;
@@ -190,11 +187,10 @@ namespace Ex03.ConsoleUI
             m_ConsoleUtils.PrintHowManyLitersToFillAndGasType(ref amountToAdd, ref gasType);
             try
             {
-
                 isVehiclefound = m_GarageManager.ChargeOrFuelVehicle(amountToAdd, licenseID, gasType);
-                m_ConsoleUtils.PrintGasIsFilled(isVehiclefound,licenseID);
+                m_ConsoleUtils.PrintGasIsFilled(isVehiclefound, licenseID);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 m_ConsoleUtils.PrintSomethingWentWrong();
             }
@@ -203,6 +199,7 @@ namespace Ex03.ConsoleUI
                 m_ConsoleUtils.PrintExceptionError(ex.Message);
             }
         }
+
         public void ChargeVehicleBattery()
         {
             int attempts = 0;
@@ -214,10 +211,10 @@ namespace Ex03.ConsoleUI
            
             try
             {
-                isVehicleFound = m_GarageManager.ChargeOrFuelVehicle(minutesToCharge, licenseID,0);
+                isVehicleFound = m_GarageManager.ChargeOrFuelVehicle(minutesToCharge, licenseID, 0);
                 m_ConsoleUtils.PrintBatterycharged(isVehicleFound, licenseID);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException)
             {
                 m_ConsoleUtils.PrintSomethingWentWrong();
             }
@@ -226,6 +223,7 @@ namespace Ex03.ConsoleUI
                 m_ConsoleUtils.PrintExceptionError(ex.Message);
             }
         }
+
         public void ChangeVehicleStatus()
         {
             int newStatusForChange = 0;
@@ -237,9 +235,5 @@ namespace Ex03.ConsoleUI
             bool isUpdateStatus = m_GarageManager.LogicChangeVehicleStatus(licenseID, newStatusForChange);
             m_ConsoleUtils.PrintStatusUpdateMsg(isUpdateStatus, newStatusForChange, licenseID);
         }
-
-
-
     }
 }
-
