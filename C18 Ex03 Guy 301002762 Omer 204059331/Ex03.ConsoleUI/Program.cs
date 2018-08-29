@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ex03.GarageLogic;
 using static Ex03.GarageLogic.Program;
+
 namespace Ex03.ConsoleUI
 {
    public class Program
@@ -24,6 +25,7 @@ namespace Ex03.ConsoleUI
             Program main = new Program();
             main.Menu();
         }
+
         private PrintConsoleUtils m_ConsoleUtils = new PrintConsoleUtils();
         private GarageManager m_GarageManager = new GarageManager();
 
@@ -37,44 +39,34 @@ namespace Ex03.ConsoleUI
             {
                 m_ConsoleUtils.PrintMenuAndGetUserChoice(ref userChoice, attempt);
                 attempt = 0;
-                try
+                switch (userChoice)
                 {
-                    switch (userChoice)
-                    {
-                        case (int)eMenuChoices.AddNewVehicle:
-                            InsertNewVehicleIntoTheGarage();
-                            break;
-                        case (int)eMenuChoices.DisplayVehiclesInGarage:
-                            DisplayVehiclesInGarage();
-                            break;
-                        case (int)eMenuChoices.ChangeVehicleStatus:
-                            ChangeVehicleStatus();
-                            break;
-                        case (int)eMenuChoices.BlowAirPressureToMax:
-                            BlowWheelsAirPerLicenseID();
-                            break;
-                        case (int)eMenuChoices.FillGas:
-                            AddFuelPerLicenseID();
-                            break;
-                        case (int)eMenuChoices.ChargeBattery:
-                            ChargeVehicleBattery();
-                            break;
-                        case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
-                            DisplayVehicleDetailsPerLicenseID();
-                            break;
-                        default:
-                            //attempt++;
-                            //break;
-                            throw new FormatException();
+                    case (int)eMenuChoices.AddNewVehicle:
+                        InsertNewVehicleIntoTheGarage();
+                        break;
+                    case (int)eMenuChoices.DisplayVehiclesInGarage:
+                        DisplayVehiclesInGarage();
+                        break;
+                    case (int)eMenuChoices.ChangeVehicleStatus:
+                        ChangeVehicleStatus();
+                        break;
+                    case (int)eMenuChoices.BlowAirPressureToMax:
+                        BlowWheelsAirPerLicenseID();
+                        break;
+                    case (int)eMenuChoices.FillGas:
+                        AddFuelPerLicenseID();
+                        break;
+                    case (int)eMenuChoices.ChargeBattery:
+                        ChargeVehicleBattery();
+                        break;
+                    case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
+                        DisplayVehicleDetailsPerLicenseID();
+                        break;
+                    default:
+                        attempt++;
+                        break;
                     }
                 }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-
-                }
-
         }
 
         public void InsertNewVehicleIntoTheGarage()
@@ -98,10 +90,14 @@ namespace Ex03.ConsoleUI
             {
                 m_ConsoleUtils.PrintExceptionError(ex.Message);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Console.WriteLine(ex.ToString());
-            }         
+                m_ConsoleUtils.PrintSomethingWentWrong();
+            }       
+            catch (FormatException)
+            {
+                m_ConsoleUtils.PrintMessgeNotExistInMenu();
+            }
         }
 
         public void GetRequiredDetailsForNewVehicle(eVehicleType i_VehicleChoice, eEngineType i_EngineChoice, string i_LicenseID)
@@ -115,29 +111,36 @@ namespace Ex03.ConsoleUI
             m_ConsoleUtils.PrintVehicleOwnerPhoneQuestion(ref ownerPhone);
             m_ConsoleUtils.PrintVehicleOwnerQuestion(ref vehicleOwner);
             m_GarageManager.CreateNewVehicleUtils.CreateNewVehicle(m_GarageManager.Vehicles, i_VehicleChoice, i_EngineChoice, i_LicenseID, modelName, wheelManufac, vehicleOwner, ownerPhone, energyLeft, currentAirPressure);
-            switch (i_VehicleChoice)
+            try
             {
-                case eVehicleType.Bike:
-                    int licenseType = 0, engineVolume = 0;
-                    m_ConsoleUtils.PrintBikeEngineVolumeQuestion(ref engineVolume, 0);
-                    m_ConsoleUtils.PrintLicenseTypeChoicesQuestion(ref licenseType, 0);
-                    m_GarageManager.SetBikeUniqDetails(engineVolume, licenseType);
-                    break;
-                case eVehicleType.Car:
-                    int carColor = 0, carNumOfDoors = 0;
-                    m_ConsoleUtils.PrintCarColorQuestion(ref carColor, 0);
-                    m_ConsoleUtils.PrintCarNumOfDoorsQuestion(ref carNumOfDoors, 0);
-                    m_GarageManager.SetCarUniqDetails(carColor, carNumOfDoors);
-                    break;
-                case eVehicleType.Truck:
-                    bool isTruckTrunkCool = false;
-                    float truckTrunkVolume = 0;
-                    m_ConsoleUtils.PrintTruckBoxVolume(ref truckTrunkVolume, 0);
-                    m_ConsoleUtils.PrintTruckTrunkCoolQuestion(ref isTruckTrunkCool, 0);
-                    m_GarageManager.SetTrunkUniqDetails(isTruckTrunkCool, truckTrunkVolume);
-                    break;
-                default:
-                    break;
+                switch (i_VehicleChoice)
+                {
+                    case eVehicleType.Bike:
+                        int licenseType = 0, engineVolume = 0;
+                        m_ConsoleUtils.PrintBikeEngineVolumeQuestion(ref engineVolume, 0);
+                        m_ConsoleUtils.PrintLicenseTypeChoicesQuestion(ref licenseType, 0);
+                        m_GarageManager.SetBikeUniqDetails(engineVolume, licenseType);
+                        break;
+                    case eVehicleType.Car:
+                        int carColor = 0, carNumOfDoors = 0;
+                        m_ConsoleUtils.PrintCarColorQuestion(ref carColor, 0);
+                        m_ConsoleUtils.PrintCarNumOfDoorsQuestion(ref carNumOfDoors, 0);
+                        m_GarageManager.SetCarUniqDetails(carColor, carNumOfDoors);
+                        break;
+                    case eVehicleType.Truck:
+                        bool isTruckTrunkCool = false;
+                        float truckTrunkVolume = 0;
+                        m_ConsoleUtils.PrintTruckBoxVolume(ref truckTrunkVolume, 0);
+                        m_ConsoleUtils.PrintTruckTrunkCoolQuestion(ref isTruckTrunkCool, 0);
+                        m_GarageManager.SetTrunkUniqDetails(isTruckTrunkCool, truckTrunkVolume);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                m_ConsoleUtils.PrintMessgeNotExistInMenu();
             }
         }
 
@@ -145,22 +148,28 @@ namespace Ex03.ConsoleUI
         {
             int userChoice = 0;
             StringBuilder vehiclesToDisplay = new StringBuilder();
-       
-            m_ConsoleUtils.VehiclesStatusFilterMenuAndGetInput(ref userChoice);
-            switch ((eStatusVehicle)userChoice)
+            try
             {
-                case eStatusVehicle.Fixed:
-                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Fixed);
-                    break;
-                case eStatusVehicle.PaidUp:
-                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.PaidUp);
-                    break;
-                case eStatusVehicle.Repair:
-                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Repair);
-                    break;
-                default:
-                    vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(null);
-                    break;
+                m_ConsoleUtils.VehiclesStatusFilterMenuAndGetInput(ref userChoice);
+
+                switch ((eStatusVehicle)userChoice)
+                {
+                    case eStatusVehicle.Fixed:
+                        vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Fixed);
+                        break;
+                    case eStatusVehicle.PaidUp:
+                        vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.PaidUp);
+                        break;
+                    case eStatusVehicle.Repair:
+                        vehiclesToDisplay = m_GarageManager.LogicDisplayVehiclesInGarage(eStatusVehicle.Repair);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                m_ConsoleUtils.PrintMessgeNotExistInMenu();
             }
 
             m_ConsoleUtils.PrintLicenseIDOfVehiclesInTheGarage(vehiclesToDisplay);
@@ -194,9 +203,9 @@ namespace Ex03.ConsoleUI
             float amountToAdd = 0;
             bool isVehiclefound = false;
             m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
-            m_ConsoleUtils.PrintHowManyLitersToFillAndGasType(ref amountToAdd, ref gasType);
             try
             {
+                m_ConsoleUtils.PrintHowManyLitersToFillAndGasType(ref amountToAdd, ref gasType);
                 isVehiclefound = m_GarageManager.ChargeOrFuelVehicle(amountToAdd, licenseID, gasType);
                 m_ConsoleUtils.PrintGasIsFilled(isVehiclefound, licenseID);
             }
@@ -207,6 +216,10 @@ namespace Ex03.ConsoleUI
             catch (ValueOutOfRangeException ex)
             {
                 m_ConsoleUtils.PrintExceptionError(ex.Message);
+            }
+            catch (FormatException)
+            {
+                m_ConsoleUtils.PrintMessgeNotExistInMenu();
             }
         }
 

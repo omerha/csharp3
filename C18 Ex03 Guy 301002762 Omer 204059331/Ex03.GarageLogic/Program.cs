@@ -151,6 +151,8 @@ namespace Ex03.GarageLogic
                     o_VehicleDeatails.AppendLine(printLine);
                     printLine = string.Format("Status of vehicle: {0}", vehicleLookFor.StatusOfVehicle);
                     o_VehicleDeatails.AppendLine(printLine);
+                    printLine = string.Format("Model name: {0}", vehicleLookFor.Vehicle.ModelName);
+                    o_VehicleDeatails.AppendLine(printLine);
                     Type typeOfEngine = vehicleLookFor.Vehicle.EngineType.GetType();
                     if (typeOfEngine.Equals(typeof(GasEngine)))
                     {
@@ -163,7 +165,8 @@ namespace Ex03.GarageLogic
 
                     o_VehicleDeatails.AppendLine(printLine);
                     vehicleLookFor.Vehicle.m_EngineType.GetEngineDetails(ref o_VehicleDeatails);
-                    printLine = string.Format("Model name: {0}", vehicleLookFor.Vehicle.ModelName);
+                    printLine = string.Format("Percentage of energy remaining: {0}%", vehicleLookFor.Vehicle.PrecentageOfEnergyLeft);
+                    o_VehicleDeatails.AppendLine(printLine);
                     vehicleLookFor.Vehicle.GetVehicleDetails(ref o_VehicleDeatails);
                 }
 
@@ -346,12 +349,6 @@ namespace Ex03.GarageLogic
                 }
             }
 
-            public float PrecentageOfEnergyLeft
-            {
-                get { return m_PrecentageOfEnergyLeft; }
-                set { m_PrecentageOfEnergyLeft = value; }
-            }
-
             public float MaximumAmountOfEnergy
             {
                 get { return m_MaximumAmountOfEnergy; }
@@ -361,11 +358,6 @@ namespace Ex03.GarageLogic
             {
                 get { return m_AmountOfEnergyLeft; }
                 set { m_AmountOfEnergyLeft = value; }
-            }
-
-            public void CalcAmountOfEnergyLeftInPercentage()
-            {
-                m_PrecentageOfEnergyLeft = (m_AmountOfEnergyLeft / m_MaximumAmountOfEnergy) * 100;
             }
 
             public abstract void ChargeOrFuelEngine(float i_AmountToAdd);
@@ -396,7 +388,6 @@ namespace Ex03.GarageLogic
                 m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
                 ValidateEnergyValues(i_AmountOfEnergyLeft);
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
-                CalcAmountOfEnergyLeftInPercentage();   
             }
 
             public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
@@ -424,7 +415,6 @@ namespace Ex03.GarageLogic
                 m_MaximumAmountOfEnergy = i_MaximumAmoutOfEnergyToCharge;
                 ValidateEnergyValues(i_AmountOfEnergyLeft);
                 AmountOfEnergyLeft = i_AmountOfEnergyLeft;
-                CalcAmountOfEnergyLeftInPercentage();
             }
 
             public override void GetEngineDetails(ref StringBuilder io_VehicleDeatails)
@@ -469,8 +459,7 @@ namespace Ex03.GarageLogic
 
             public float PrecentageOfEnergyLeft
             {
-                get { return m_PrecentageOfEnergyLeft; }
-                set { m_PrecentageOfEnergyLeft = value; }
+                get { return m_EngineType.AmountOfEnergyLeft / m_EngineType.MaximumAmountOfEnergy * 100; }
             }
 
             public void ValidateValueInRange(float i_MaxValue, float i_Value, string i_ValueName)

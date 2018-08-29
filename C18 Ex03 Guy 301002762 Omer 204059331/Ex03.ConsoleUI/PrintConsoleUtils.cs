@@ -233,6 +233,7 @@ namespace Ex03.ConsoleUI
                 menuChoices.AppendLine(lineNum + ". " + value);
                 lineNum++;
             }
+
             while (!inputIsOk)
             {
                 if (i_Attempts == 0)
@@ -248,21 +249,27 @@ namespace Ex03.ConsoleUI
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_UserChoice))
                 {
-                    if (io_UserChoice != (int)GarageLogic.Program.eVehicleType.Truck)
+                    if (Enum.IsDefined(typeof(eVehicleType), io_UserChoice))
                     {
-                        PrintEngineSelectionAndGetInput(ref io_EngineChoice, 0);
+                        if (io_UserChoice != (int)GarageLogic.Program.eVehicleType.Truck)
+                        {
+                            PrintEngineSelectionAndGetInput(ref io_EngineChoice, 0);
+                        }
+                        else
+                        {
+                            io_EngineChoice = (int)eEngineType.Gas;
+                        }
+
+                        inputIsOk = true;
                     }
                     else
                     {
-                        io_EngineChoice = (int)eEngineType.Gas;
+                        throw new FormatException();
                     }
-
-                    inputIsOk = true;
                 }
 
                 i_Attempts++;
             }
-
         }
 
         public void PrintStatusUpdated()
@@ -297,7 +304,14 @@ namespace Ex03.ConsoleUI
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_EngineChoice))
                 {
-                    inputIsOk = true;
+                    if (Enum.IsDefined(typeof(eEngineType), io_EngineChoice))
+                    {
+                        inputIsOk = true;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
 
                 i_Attempts++;
@@ -336,7 +350,14 @@ namespace Ex03.ConsoleUI
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_LicenseTypeChoice))
                 {
-                    inputIsOk = true;
+                    if (Enum.IsDefined(typeof(eLicenseType), io_LicenseTypeChoice))
+                    {
+                        inputIsOk = true;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
 
                 i_Attempts++;
@@ -365,18 +386,26 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Wrong input, please try again.{0}Select the color from the list below:", Environment.NewLine);
                 }
+
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out io_ColorChoice))
                 {
-                    inputIsOk = true;
+                    if (Enum.IsDefined(typeof(eCarColor), io_ColorChoice))
+                    {
+                        inputIsOk = true;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
 
                 i_Attempts++;
             }
         }
 
-        public void PrintCarNumOfDoorsQuestion(ref int io_ColorChoice, int i_Attempts)
+        public void PrintCarNumOfDoorsQuestion(ref int io_NumberOfDoorsChoice, int i_Attempts)
         {
             StringBuilder menuChoices = new StringBuilder();
             int lineNum = 1;
@@ -401,9 +430,16 @@ namespace Ex03.ConsoleUI
 
                 Console.WriteLine(menuChoices);
                 userInput = Console.ReadLine();
-                if (int.TryParse(userInput, out io_ColorChoice))
+                if (int.TryParse(userInput, out io_NumberOfDoorsChoice))
                 {
-                    inputIsOk = true;
+                    if (Enum.IsDefined(typeof(eNumOfDoors), io_NumberOfDoorsChoice))
+                    {
+                        inputIsOk = true;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
 
                 i_Attempts++;
@@ -442,7 +478,14 @@ namespace Ex03.ConsoleUI
                 userInput = Console.ReadLine();
                 if (int.TryParse(userInput, out o_UserChoice))
                 {
-                    inputIsOk = true;
+                    if (Enum.IsDefined(typeof(eStatusVehicle), o_UserChoice))
+                    {
+                        inputIsOk = true;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
 
                 attemptsSelection++;
@@ -451,14 +494,7 @@ namespace Ex03.ConsoleUI
 
         public void PrintLicenseIDOfVehiclesInTheGarage(StringBuilder i_LicenseIDToPrint)
         {
-            if (i_LicenseIDToPrint.Length > 0)
-            {
                 Console.WriteLine(i_LicenseIDToPrint);
-            }
-            else
-            {
-                Console.WriteLine("Not exist vehicle in the garage! (with your selected filter)");
-            }
         }
 
         public void PrintVehicleDetails(StringBuilder i_VehicleDetails, bool i_IsFoundCar, string i_LicenseID)
@@ -557,8 +593,15 @@ namespace Ex03.ConsoleUI
                     Console.WriteLine(gasOptions);
                     userInput = Console.ReadLine();
                     int.TryParse(userInput, out io_GasType);
-                    userInputCorrect = true;
-                    break;
+                    if (Enum.IsDefined(typeof(eGasType), io_GasType))
+                    {
+                        userInputCorrect = true;
+                        break;
+                    }
+                    else
+                    {
+                        throw new FormatException();
+                    }
                 }
                 else
                 {
@@ -612,6 +655,11 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
+        }
+
+        public void PrintMessgeNotExistInMenu()
+        {
+            Console.WriteLine("This option doen't exist in the menu");
         }
     }
 }
