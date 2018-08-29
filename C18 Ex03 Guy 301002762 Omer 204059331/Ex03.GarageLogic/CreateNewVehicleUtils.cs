@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
                 switch (i_VehicleType)
                 {
                     case eVehicleType.Bike:
-                       io_VehiclesInGarage.Add(new VehicleInTheGarage(new Bike(i_LicenseID, new GasEngine(k_BikeGasType, k_BikeMaximumAmountOfGas, i_EnergyLeft), i_WheelManufac, i_CurrAirPressure),i_OwnerName,i_OwnerPhoneNumber));
+                       io_VehiclesInGarage.Add(new VehicleInTheGarage(new Bike(i_ModelName,i_LicenseID, new GasEngine(k_BikeGasType, k_BikeMaximumAmountOfGas, i_EnergyLeft), i_WheelManufac, i_CurrAirPressure),i_OwnerName,i_OwnerPhoneNumber));
                         break;
                     case eVehicleType.Car:
                         io_VehiclesInGarage.Add(new VehicleInTheGarage(new Car(i_ModelName, new GasEngine(k_CarGasType, k_CarMaximumAmountOfGas, i_EnergyLeft), i_LicenseID, i_WheelManufac, i_CurrAirPressure), i_OwnerName, i_OwnerPhoneNumber));
@@ -30,7 +30,7 @@ namespace Ex03.GarageLogic
                 switch (i_VehicleType)
                 {
                     case eVehicleType.Bike:
-                        io_VehiclesInGarage.Add(new VehicleInTheGarage(new Bike(i_LicenseID, new ElectricEngine(k_CarMaximumAmountOfElectric, i_EnergyLeft), i_WheelManufac, i_CurrAirPressure), i_OwnerName, i_OwnerPhoneNumber));
+                        io_VehiclesInGarage.Add(new VehicleInTheGarage(new Bike(i_ModelName,i_LicenseID, new ElectricEngine(k_CarMaximumAmountOfElectric, i_EnergyLeft), i_WheelManufac, i_CurrAirPressure), i_OwnerName, i_OwnerPhoneNumber));
                         break;
                     case eVehicleType.Car:
                         io_VehiclesInGarage.Add(new VehicleInTheGarage(new Car(i_ModelName, new ElectricEngine(k_CarMaximumAmountOfElectric, i_EnergyLeft), i_LicenseID, i_WheelManufac, i_CurrAirPressure), i_OwnerName, i_OwnerPhoneNumber));

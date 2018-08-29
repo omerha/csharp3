@@ -158,7 +158,45 @@ namespace Ex03.GarageLogic
                 }
                 return isFoundVehicle;
             }
-
+            public bool ChargeOrFuelVehicle(float i_AmountToAdd,string i_LicenseID,int i_GasType)
+            {
+                bool isCarCharged = false;
+                VehicleInTheGarage vehicleToFill = null;
+                isCarCharged = IsTheVehiclesExsitsInTheGarage(i_LicenseID, ref vehicleToFill);
+                if (isCarCharged)
+                {
+                    if ((!(vehicleToFill.Vehicle.EngineType is ElectricEngine) && i_GasType == 0) || (!(vehicleToFill.Vehicle.EngineType is GasEngine) && i_GasType != 0))
+                    {
+                        throw new ArgumentException();
+                    }
+                    else if(vehicleToFill.Vehicle.EngineType is ElectricEngine)
+                    { 
+                        vehicleToFill.Vehicle.EngineType.ChargeOrFuelEngine(i_AmountToAdd);
+                    }
+                    else
+                    {
+                        eGasType gasTypeToFill = (eGasType)i_GasType;
+                        if(!(gasTypeToFill == ((GasEngine)vehicleToFill.Vehicle.EngineType).GasType))
+                        {
+                            throw new ArgumentException();
+                        }
+                        vehicleToFill.Vehicle.EngineType.ChargeOrFuelEngine(i_AmountToAdd);
+                    }
+               
+                }
+                return isCarCharged;
+            }
+            public bool BlowVehicleAirPressurePerLicenseID(string i_LicenseID)
+            {
+                bool vehicleFound = false;
+                VehicleInTheGarage vehicleToBlowWheels = null;
+                vehicleFound = IsTheVehiclesExsitsInTheGarage(i_LicenseID,ref vehicleToBlowWheels);
+                if(vehicleFound)
+                {
+                    vehicleToBlowWheels.Vehicle.BlowAirToMax();
+                }
+                return vehicleFound;
+            }
             public bool IsTheVehiclesExsitsInTheGarage(string i_LicenseID, ref VehicleInTheGarage o_VehicleForLook) 
             {
                 bool isFoundVehicle = false;
@@ -277,7 +315,7 @@ namespace Ex03.GarageLogic
 
         public abstract class Engine
         {
-            private float m_AmountOfEnergyLeft;
+            protected float m_AmountOfEnergyLeft;
             protected float m_MaximumAmountOfEnergy;
             private float m_PrecentageOfEnergyLeft;
             public void Recharge(float i_AmountOfEnergyToCharge)
@@ -306,6 +344,7 @@ namespace Ex03.GarageLogic
             {
                 m_PrecentageOfEnergyLeft = (m_AmountOfEnergyLeft / m_MaximumAmountOfEnergy) * 100;
             }
+            public abstract void ChargeOrFuelEngine(float i_AmountToAdd);
             public void ValidateEnergyValues(float i_NewValueForEnergyLeft)
             {
                 if (i_NewValueForEnergyLeft > m_MaximumAmountOfEnergy || i_NewValueForEnergyLeft < 0)
@@ -342,6 +381,11 @@ namespace Ex03.GarageLogic
                 printLine = string.Format("Gas type: {0}", GasType);
                 io_VehicleDeatails.AppendLine(printLine);
             }
+            public override void ChargeOrFuelEngine(float i_LitersToAdd)
+            {
+                ValidateEnergyValues(m_AmountOfEnergyLeft + i_LitersToAdd);
+                m_AmountOfEnergyLeft += i_LitersToAdd;
+            }
         }
         public class ElectricEngine : Engine
         {
@@ -360,6 +404,12 @@ namespace Ex03.GarageLogic
                 io_VehicleDeatails.AppendLine(printLine);
                 printLine = string.Format("Maximum amount of energy: {0}", base.MaximumAmountOfEnergy);
                 io_VehicleDeatails.AppendLine(printLine);
+            }
+            public override void ChargeOrFuelEngine(float i_MinutesToCharge)
+            {
+                float hoursToCharge = i_MinutesToCharge / 60;
+                ValidateEnergyValues(m_AmountOfEnergyLeft + hoursToCharge);
+                m_AmountOfEnergyLeft += hoursToCharge;
             }
         }
 
@@ -398,7 +448,7 @@ namespace Ex03.GarageLogic
                 }
             }
 
-            public void BlowAir()
+            public void BlowAirToMax()
             {
                 int getLeng = 0;
                 for (int i = 0; i < m_Wheels.GetLength(getLeng); i++)
@@ -408,7 +458,6 @@ namespace Ex03.GarageLogic
             }
 
             public abstract void GetVehicleDetails(ref StringBuilder io_VehicleDeatails);
-            public abstract void BlowAirToMaximum(ref string i_LicenseID);
         }
 
         public class Bike : Vehicle
@@ -417,8 +466,9 @@ namespace Ex03.GarageLogic
             private eLicenseType m_LicenseType;
             private int m_EngineVolume;
             
-            public Bike(string i_LicenseID, Engine i_Engine, string i_WheelManufac, float i_CurrAirPressure)
+            public Bike(string i_ModelName, string i_LicenseID, Engine i_Engine, string i_WheelManufac, float i_CurrAirPressure)
             {
+                m_ModelName = i_ModelName;
                 m_LicenseID = i_LicenseID;
                 m_EngineType = i_Engine;
                 m_Wheels = new Wheel[k_BikeNumOfWheels];
@@ -452,13 +502,7 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
-            public override void BlowAirToMaximum(ref string i_LicenseID)
-            {
-                for (int i = 0; i < k_BikeNumOfWheels; i++)
-                {
-                    base.m_Wheels[i].CurrentAirPressure = k_BikeMaxAirPressure;
-                }
-            }
+
         }
         public class Car : Vehicle
         {
@@ -505,13 +549,7 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
-            public override void BlowAirToMaximum(ref string i_LicenseID)
-            {
-                for (int i = 0; i < k_CarNumOfWheels; i++)
-                {
-                    base.m_Wheels[i].CurrentAirPressure = k_CarMaxAirPressure;
-                }
-            }
+
         }
 
         public class Truck : Vehicle
@@ -564,13 +602,7 @@ namespace Ex03.GarageLogic
                     io_VehicleDeatails.AppendLine(printLine);
                 }
             }
-            public override void BlowAirToMaximum(ref string i_LicenseID)
-            {
-                for (int i = 0; i < k_TruckNumOfWheels; i++)
-                {
-                    base.m_Wheels[i].CurrentAirPressure = k_TruckMaxAirPressure;
-                }
-            }
+ 
         }
 
         public class Wheel

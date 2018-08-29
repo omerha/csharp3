@@ -435,7 +435,96 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
             }
         }
+        public void PrintAirPressureUpdated( bool i_IsFoundCar, string i_LicenseID)
+        {
+            if (i_IsFoundCar)
+            {
+                Console.WriteLine(string.Format("The wheels air pressure for vehicle {0} is now maximum",i_LicenseID));
+            }
+            else
+            {
+                Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
+            }
+        }
+        public void PrintBatterycharged(bool i_IsFoundCar, string i_LicenseID)
+        {
+            if (i_IsFoundCar)
+            {
+                Console.WriteLine(string.Format("The battery for vehicle {0} is now charged", i_LicenseID));
+            }
+            else
+            {
+                Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
+            }
+        }
+        public void PrintGasIsFilled(bool i_IsFoundCar, string i_LicenseID)
+        {
 
+            if (i_IsFoundCar)
+            {
+                Console.WriteLine(string.Format("Successfully filled fuel for vehicle license {0}", i_LicenseID));
+            }
+            else
+            {
+                Console.WriteLine("There isn't vehicle with the license number: {0} in the garage!!!", i_LicenseID);
+            }
+        }
+        public void PrintSomethingWentWrong()
+        {
+            Console.WriteLine("Unfortunatley this cannot be done, please try again with different values.");
+        }
+        public void PrintHowManyMinutesToChargeBatteryQuestion(ref float io_MinutesTOCharge)
+        {
+            string userInput = null;
+            bool userInputCorrect = false;
+           
+            while (!userInputCorrect)
+            {
+                Console.WriteLine("Please enter how many minutes you wish to charge your vehicle's battery");
+                userInput = Console.ReadLine();
+                if(float.TryParse(userInput, out io_MinutesTOCharge))
+                {
+                    userInputCorrect = true;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input,Please try again.");
+                }
+                
+            }
+        }
+        public void PrintHowManyLitersToFillAndGasType(ref float io_LitersToAdd,ref int io_GasType)
+        {
+            string userInput = null;
+            bool userInputCorrect = false;
+            StringBuilder gasOptions = new StringBuilder();
+            int lineNum = 1;
+            foreach (string value in Enum.GetNames(typeof(GarageLogic.Program.eGasType)))
+            {
+                gasOptions.AppendLine(lineNum + ". " + value);
+                lineNum++;
+            }
+            while (!userInputCorrect)
+            {
+                Console.WriteLine("Please enter how many liters you wish to fuel your vehicle");
+                userInput = Console.ReadLine();
+                if (float.TryParse(userInput, out io_LitersToAdd))
+                {
+                    Console.WriteLine("Please enter the gas type of your vehicle");
+                    Console.WriteLine(gasOptions);
+                    userInput = Console.ReadLine();
+                    int.TryParse(userInput, out io_GasType);
+                    userInputCorrect = true;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input,Please try again.");
+                }
+
+            }
+        }
         public void PrintStatusOptionsMenuAndGetInput(ref int o_NewStatus)
         {
             StringBuilder menuChoices = new StringBuilder();

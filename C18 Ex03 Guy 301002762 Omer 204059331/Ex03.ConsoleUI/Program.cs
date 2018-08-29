@@ -51,11 +51,13 @@ namespace Ex03.ConsoleUI
                         ChangeVehicleStatus();
                         break;
                     case (int)eMenuChoices.BlowAirPressureToMax:
-                        m_GarageManager.Vehicles[0].Vehicle.BlowAir();
+                        BlowWheelsAirPerLicenseID();
                         break;
                     case (int)eMenuChoices.FillGas:
+                        AddFuelPerLicenseID();
                         break;
                     case (int)eMenuChoices.ChargeBattery:
+                        ChargeVehicleBattery();
                         break;
                     case (int)eMenuChoices.DisplayVehicleDetailsPerLicenseID:
                         DisplayVehicleDetailsPerLicenseID();
@@ -98,7 +100,7 @@ namespace Ex03.ConsoleUI
         public void GetRequiredDetailsForNewVehicle(eVehicleType i_VehicleChoice, eEngineType i_EngineChoice, string i_LicenseID)
         { 
             string modelName=null, wheelManufac=null, vehicleOwner=null, ownerPhone=null;
-             float  energyLeft=0,currentAirPressure=0;
+            float energyLeft = 0, currentAirPressure = 0;
             m_ConsoleUtils.PrintCurrentAirPressureEnergy(ref currentAirPressure, 0);
             m_ConsoleUtils.PrintEnergyLeftQuestion(ref energyLeft, 0);
             m_ConsoleUtils.PrintModelNameQuestion(ref modelName);
@@ -168,7 +170,62 @@ namespace Ex03.ConsoleUI
             m_ConsoleUtils.PrintVehicleDetails(vehicleDeatails, isFoundCar, licenseID);
         }
 
+        public void BlowWheelsAirPerLicenseID()
+        {
+            string licenseID = null;
+            int attempts = 0;
+            bool isVehicleFound = false;
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
+            isVehicleFound = m_GarageManager.BlowVehicleAirPressurePerLicenseID(licenseID);
+            m_ConsoleUtils.PrintAirPressureUpdated(isVehicleFound, licenseID);
+        }
+        public void AddFuelPerLicenseID()
+        {
+            string licenseID = null;
+            int attempts = 0;
+            int gasType = 0;
+            float amountToAdd = 0;
+            bool isVehiclefound = false;
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
+            m_ConsoleUtils.PrintHowManyLitersToFillAndGasType(ref amountToAdd, ref gasType);
+            try
+            {
 
+                isVehiclefound = m_GarageManager.ChargeOrFuelVehicle(amountToAdd, licenseID, gasType);
+                m_ConsoleUtils.PrintGasIsFilled(isVehiclefound,licenseID);
+            }
+            catch (ArgumentException ex)
+            {
+                m_ConsoleUtils.PrintSomethingWentWrong();
+            }
+            catch (ValueOutOfRangeException ex)
+            {
+                m_ConsoleUtils.PrintExceptionError(ex.Message);
+            }
+        }
+        public void ChargeVehicleBattery()
+        {
+            int attempts = 0;
+            string licenseID = null;
+            bool isVehicleFound = false;
+            float minutesToCharge = 0;
+            m_ConsoleUtils.PrintInsertLicseneIDQuestion(ref licenseID, attempts);
+            m_ConsoleUtils.PrintHowManyMinutesToChargeBatteryQuestion(ref minutesToCharge);
+           
+            try
+            {
+                isVehicleFound = m_GarageManager.ChargeOrFuelVehicle(minutesToCharge, licenseID,0);
+                m_ConsoleUtils.PrintBatterycharged(isVehicleFound, licenseID);
+            }
+            catch(ArgumentException ex)
+            {
+                m_ConsoleUtils.PrintSomethingWentWrong();
+            }
+            catch (ValueOutOfRangeException ex)
+            {
+                m_ConsoleUtils.PrintExceptionError(ex.Message);
+            }
+        }
         public void ChangeVehicleStatus()
         {
             int newStatusForChange = 0;
